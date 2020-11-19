@@ -8,6 +8,8 @@ from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from sys import exc_info
 from traceback import extract_tb
+import os
+from textwrap import wrap
 
 def newKeys():
     # Creates new keys
@@ -75,6 +77,22 @@ def decry(em, priv):
 #print(res)
 # print(pub())
 
+def en(m, pub):
+    # Encrypt list of m
+    l = wrap(m, 32)
+    l2 = [encry(item, pub) for item in l]
+    return l2
+#l = en('123456dsfsdfsdfsdfsdfsdfsdf7890cxvxcsdads',pubkey)
+#print(l)
+
+def de(en_m, priv):
+    # Decrypt list of m
+    r2 = [decry(item, priv) for item in en_m]
+    r = ''.join(r2)
+    return r
+#r = de(l,privkey)
+#print(r)
+
 
 def encrypting(i_password, text):
     # Encrypting str by password
@@ -136,14 +154,14 @@ def enc_F_save(password, stri, name):
     password = str(password)
     stri = str(stri)
     salt, encryptedtext = encrypting(password, stri)
-    f = open(str(name), 'w')
+    f = open(str(os.getcwd())+'/'+str(name), 'w')
     f.write(str(encryptedtext))
 #enc_F_save('123', privkey)
 
 def dec_F_import(password, file):
     # Load data from file and decrypts it by password
     password = str(password)
-    ff = open(file, 'r')
+    ff = open(str(os.getcwd())+'/'+str(file), 'r')
     f = ff.read()
     decryptedtext = decrypting(password, f)
     return decryptedtext
@@ -206,5 +224,5 @@ def ifif(inp, wh):
 
 #ifif('-newkeys','AA')
 
-
+print(os.getcwd())
 
