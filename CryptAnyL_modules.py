@@ -86,7 +86,7 @@ def en(m, pub):
     l2 = re.sub(r'[\[\]\'\s]', '', l2)
     return l2
 # l = en('123456dsfsdfsdfsdfsdfsdfsdf7890cxvxcsdads',pubkey)
-# l = str(l) # Исправить проблему с стр
+# l = str(l) # Исправил проблему с стр
 # print(l)
 
 def de(en_m, priv):
@@ -160,15 +160,15 @@ def enc_F_save(password, stri, name):
     password = str(password)
     stri = str(stri)
     salt, encryptedtext = encrypting(password, stri)
-    f = open(str(os.getcwd())+'/'+str(name), 'w')
-    f.write(str(encryptedtext))
+    with open(str(os.getcwd())+'/'+str(name), 'w') as f:
+        f.write(str(encryptedtext))
 #enc_F_save('123', privkey)
 
 def dec_F_import(password, file):
     # Load data from file and decrypts it by password
     password = str(password)
-    ff = open(str(os.getcwd())+'/'+str(file), 'r')
-    f = ff.read()
+    with open(str(os.getcwd())+'/'+str(file), 'r') as ff:
+        f = ff.read()
     decryptedtext = decrypting(password, f)
     return decryptedtext
 # de = dec_F_import('123', 'file.txt')
@@ -230,5 +230,5 @@ def ifif(inp, wh):
 
 #ifif('-newkeys','AA')
 
-print(os.getcwd())
+#print(os.getcwd())
 
