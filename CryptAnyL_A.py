@@ -199,7 +199,7 @@ while q3 == True:
         else:
             INP_Fkeys = b64out(INP_Fkeys)
             #print("INP_Fkeys:", INP_Fkeys)
-            myEncryptM = encry(INP_sent, INP_Fkeys)
+            myEncryptM = en(INP_sent, INP_Fkeys)
             INP_Fkeys = b64in(INP_Fkeys)
 
             print('Sent this text to your friend:',myEncryptM)
@@ -218,7 +218,7 @@ while q3 == True:
             continue
         else:
             INP_Fmessage = re.sub(r'\s', '', INP_Fmessage)
-            F_encrypted_m = decry(INP_Fmessage, privatkey)
+            F_encrypted_m = de(INP_Fmessage, privatkey)
             print(F_encrypted_m)
     except Exception as e:
         print(extract_tb(exc_info()[2])[0][1],e)

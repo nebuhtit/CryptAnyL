@@ -25,12 +25,12 @@ def newKeys():
 def b64in(textin):
     # func convert by base64 (to str)
     t = str(textin).encode('utf8')
-    ress = base64.b64encode(t)
+    ress = base64.urlsafe_b64encode(t)
     res = ress.decode('utf8')
     return res
 def b64out(textin2):
     t2 = str(textin2).encode('utf8')
-    ress2 = base64.b64decode(t2)
+    ress2 = base64.urlsafe_b64decode(t2)
     res2 = ress2.decode('utf8')
     return res2
 # proverka64 = b64in('123rfs4')
@@ -78,20 +78,26 @@ def decry(em, priv):
 # print(pub())
 
 def en(m, pub):
-    # Encrypt list of m
-    l = wrap(m, 32)
+    # Encrypt list of m. This part needs because m can't be more than 40+ symbols.
+    m =str(m)
+    l = wrap(m, 27)
     l2 = [encry(item, pub) for item in l]
+    l2 = str(l2)
+    l2 = re.sub(r'[\[\]\'\s]', '', l2)
     return l2
-#l = en('123456dsfsdfsdfsdfsdfsdfsdf7890cxvxcsdads',pubkey)
-#print(l)
+# l = en('123456dsfsdfsdfsdfsdfsdfsdf7890cxvxcsdads',pubkey)
+# l = str(l) # Исправить проблему с стр
+# print(l)
 
 def de(en_m, priv):
     # Decrypt list of m
-    r2 = [decry(item, priv) for item in en_m]
+    en_m = str(en_m)
+    r2 = en_m.split(',')
+    r2 = [decry(item, priv) for item in r2]
     r = ''.join(r2)
     return r
-#r = de(l,privkey)
-#print(r)
+# r = de(l,privkey)
+# print(r)
 
 
 def encrypting(i_password, text):
