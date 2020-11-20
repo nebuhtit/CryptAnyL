@@ -74,14 +74,7 @@ except FileNotFoundError as e:
         #pasw, what_to_do = ifif('-newkeys', who)
         uslovia('-newkeys')
         q = False
-        # print(extract_tb(exc_info()[2])[0][1], e)
-        # pubkey, privkey = newKeys()
-        # pasw = input('Create new password:')
-        # enc_F_save(pasw, privkey, 'personalresAA.txt')
-        # enc_F_save(pasw, pubkey, 'publicresAA.txt')
-        # pubkeyFromFile = b64in(dec_F_import(pasw, 'publicresAA.txt'))
-        # #print('Your public key:', pubkeyFromFile, '\nsent it to your friend')
-        # q = False
+
 except Exception as e:
     print(extract_tb(exc_info()[2])[0][1], e)
 q0 = True
@@ -93,38 +86,6 @@ while q0 == True:
             continue
         elif usl == 'break':
             break
-        # if str(pasw) == '-newkeys':
-        #     pasw = input('Create new password:')
-        #     createNewkeys('AA', pasw)
-        #     pubkeyFromFile = b64in(dec_F_import(pasw, 'publicresAA.txt'))
-        #     continue
-        # if str(pasw) == '-q':
-        #     quit()
-        # if str(pasw) == '-mypublic':
-        #     q = True
-        #     while q == True:
-        #         try:
-        #             pasw = input('Enter password:')
-        #             pubkeyFromFile = b64in(dec_F_import(pasw, 'publicres' + who + '.txt'))
-        #             #print('Your public key:', pubkeyFromFile, '\nsent it to your friend')
-        #             q0 = False
-        #             what_to_do = 'continue'
-        #             break
-        #             # return pasw, what_to_do
-        #         except FileNotFoundError as e:
-        #             print(extract_tb(exc_info()[2])[0][1], e)
-        #             pasw = input('Keys are not exist. Create new password:')
-        #             createNewkeys(who, pasw)
-        #             pubkeyFromFile = b64in(dec_F_import(pasw, 'publicres' + who + '.txt'))
-        #             q0 = False
-        #             what_to_do = 'continue'
-        #             break
-        #             # return pasw, what_to_do
-        #         except Exception as e:
-        #             print(extract_tb(exc_info()[2])[0][1], e)
-        #             print('password is not correct or file with mistake, try again.')
-        #             continue
-
         privatkey = dec_F_import(pasw, 'personalresAA.txt')
         q0 = False
         break
@@ -136,22 +97,7 @@ while q0 == True:
         print(extract_tb(exc_info()[2])[0][1], e)
         print('password is not correct or file with mistake, try again.')
         continue
-# while q == True:
-#     try:
-#         if q0 == False:
-#             break
-#         else:
-#             pasw = input('Enter password:')
-#         if str(pasw) == '-newkeys':
-#             createNewkeys('AA')
-#         pubkeyFromFile = b64in(dec_F_import(pasw, 'publicresAA.txt'))
-#         q = False
-#         break
-#     except Exception as e:
-#         print(extract_tb(exc_info()[2])[0][1], e)
-#         print(
-#             'password is not correct or file with mistake, try again.\n-newkeys recreate your keys but you loos your priveus messages')  # Дописать возможность создания новых публичных ключей со стиранием старых.
-#         continue
+
 pubkeyFromFile = b64in(dec_F_import(pasw, 'publicresAA.txt'))
 q2 = True
 
@@ -176,10 +122,6 @@ while q2 == True:
     enc_F_save(pasw, INP_Fkeys, 'friendsresAA.txt')
     privatkey = dec_F_import(pasw, 'personalresAA.txt')
     break
-
-
-
-
 
 q3 = True
 while q3 == True:

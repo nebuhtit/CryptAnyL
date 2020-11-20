@@ -185,50 +185,22 @@ def createNewkeys(NIK, pasw):
     pubkeyFromFile = b64in(dec_F_import(pasw, 'publicres'+NIK+'.txt'))
     #print('Your public key:', pubkeyFromFile, '\nsent it to your friend')
 
-def ifif(inp, wh):
-    # DOESN'T WORK
-    # Comands for input
-    wh = str(wh)
-    global q, q0, pasw, pasw_
-    if str(inp) == '-q':
-        quit()
-    if str(inp) == '-mypublic':
-        q = True
-        while q ==True:
-            try:
-                pasw = input('Enter password:')
-                pubkeyFromFile = b64in(dec_F_import(pasw, 'publicres'+wh+'.txt'))
-                print('Your public key:', pubkeyFromFile, '\nsent it to your friend')
-                q0 = False
-                what_to_do = 'continue'
-                #return pasw, what_to_do
-            except FileNotFoundError as e:
-                print(extract_tb(exc_info()[2])[0][1], e)
-                pasw = input('Keys are not exist. Create new password:')
-                createNewkeys(wh, pasw)
-                pubkeyFromFile = b64in(dec_F_import(pasw, 'publicres'+wh+'.txt'))
-                q0 = False
-                what_to_do = 'continue'
-                #return pasw, what_to_do
-            except Exception as e:
-                print(extract_tb(exc_info()[2])[0][1], e)
-                print('password is not correct or file with mistake, try again.')
-                continue
+def enfile():
+    key = Fernet.generate_key()
+    print(key)
+    fernet = Fernet(key)
+    with open('aa.png', 'rb') as f:
+        ff = f.read()
+    res = fernet.encrypt(ff)
+    print(res)
 
+    with open('aa.png.encrypted', 'wb') as f:
+        f.write(res)
 
-            return what_to_do
-    if str(inp) == '-newkeys':
-        pasw = input('Create new password:')
-        createNewkeys(wh, pasw)
-        pubkeyFromFile = b64in(dec_F_import(pasw, 'publicres'+str(wh)+'.txt'))
-        pasw_ = pasw
-        q = False
-        q0 = False
-        what_to_do = 'break'
-        return pasw, what_to_do
+    with open('aa.png.encrypted', 'rb') as new:
+        nnew = new.read()
 
+    newfile = fernet.decrypt(nnew)
 
-#ifif('-newkeys','AA')
-
-#print(os.getcwd())
-
+    with open('newfile.png', 'wb') as f:
+        f.write(newfile)
