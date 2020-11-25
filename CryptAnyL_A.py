@@ -18,11 +18,13 @@ def uslovia(inputt):
 
 -f + ' ' + path to file; путь до файла  =  It encrypts file and puts it in For_sent. Send this file with stiring of key. Don't encrypted this key by Fiend's key, it's already encrypted, just send file and key. ; Шифрует файл и кладет его в For_sent. Отправьте этот файл и ключ. Не стоит шифровать ключ по ключам друга, они уже зашифрованы по ним.
 
--ff + ' ' + path to encrypted file; путь до зашифрованного файла + ' ' + key; ключ  =  It decrypts file and puts it in Down_files. For decrypt file, use key. Don't decrypt key, it works automatically. Расшифрововает файл и кладет в Down_files. Используйте ключ. Не расшифровайте ключ, вставте как есть, этопроизойдет автоматически.
-
+-ff + ' ' + path to encrypted file; путь до зашифрованного файла + ' ' + key; ключ  =  It decrypts file and puts it in Down_files. For decrypt file, use key. Don't decrypt key, it works automatically. Расшифрововает файл и кладет в Down_files. Используйте ключ. Не расшифровайте ключ, вставте так же, это произойдет автоматически.
 While chat ; Во время переписки:
     [enter] = Pass this part; Пропустить это действие
-        """)
+        
+This pragram is based on open source libraries. The author is not responsible for data loss during use. By using the program, the user assumes full responsibility for all consequences. The author urges to use the program only with good intentions.;
+Это праграмма основана на библиотеках с отрытым исходным кодом. Автор не несет ответсвенность за потерю данных при использования. Пользуясь программой, пользователь принимает полную ответственность за все последствия на себя. Автор настоятельно призывает использовать прогрмму только с благими намериниями.
+""")
         what_to_do = 'continue'
 
     if str(inputt) == '-newkeys':
