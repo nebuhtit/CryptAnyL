@@ -36,6 +36,7 @@ While chat ; Во время переписки:
                 createNewkeys('AA', pasw)
                 pubkeyFromFile = b64in(dec_F_import(pasw, 'publicresAA.txt'))
                 print('created')
+                print('Your public key:', pubkeyFromFile, '\nsent it to your friend')
                 what_to_do = 'continue'
                 # return what_to_do
                 # continue
@@ -59,7 +60,7 @@ While chat ; Во время переписки:
 
             what_to_do = 'break'
     except Exception as e:
-        print(extract_tb(exc_info()[2])[0][1], e)
+        #print(extract_tb(exc_info()[2])[0][1], e)
         pass
 
     try:
@@ -76,7 +77,7 @@ While chat ; Во время переписки:
             # print(new_path)
             what_to_do = 'break'
     except Exception as e:
-        print(extract_tb(exc_info()[2])[0][1], e)
+        #print(extract_tb(exc_info()[2])[0][1], e)
         pass
 
     if str(inputt) == '-mypublic':
@@ -143,14 +144,14 @@ while q0 == True:
 pubkeyFromFile = b64in(dec_F_import(pasw, 'publicresAA.txt'))
 q2 = True
 
-print('Your public key:\n', pubkeyFromFile, '\nsent it to your friend')
+#print('Your public key:\n', pubkeyFromFile, '\nsent it to your friend')
 
 while q2 == True:
     try:
         INP_Fkeys = dec_F_import(pasw, 'friendsresAA.txt')
         q2 = False
     except Exception as e:
-        print(extract_tb(exc_info()[2])[0][1], e)
+        #print(extract_tb(exc_info()[2])[0][1], e)
 
         INP_Fkeys = re.sub(r'\s', '', input("Past here friend's public key\n:"))
 
@@ -174,7 +175,7 @@ while q3 == True:
         if usl == 'continue':
             enc_F_save(pasw, INP_Fkeys, 'friendsresAA.txt')
             privatkey = dec_F_import(pasw, 'personalresAA.txt')
-            print('Your public key:', pubkeyFromFile, '\nsent it to your friend')
+            #print('Your public key:', pubkeyFromFile, '\nsent it to your friend')
             continue
         elif usl == 'break':
             continue
@@ -196,7 +197,7 @@ while q3 == True:
         if usl == 'continue':
             enc_F_save(pasw, INP_Fkeys, 'friendsresAA.txt')
             privatkey = dec_F_import(pasw, 'personalresAA.txt')
-            print('Your public key:', pubkeyFromFile, '\nsent it to your friend')
+            #print('Your public key:', pubkeyFromFile, '\nsent it to your friend')
             continue
         elif usl == 'break':
             continue

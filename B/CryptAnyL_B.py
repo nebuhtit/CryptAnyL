@@ -5,8 +5,8 @@ who = 'BB'
 print('-h = list of commands; список команд')
 
 def uslovia(inputt):
-    inputt = str(inputt)
     # Comands for input
+    inputt = str(inputt)
     global pasw, pubkeyFromFile
     what_to_do = ''
     if str(inputt) == '-h' or str(inputt) == '-help':
@@ -143,7 +143,7 @@ while q0 == True:
 pubkeyFromFile = b64in(dec_F_import(pasw, 'publicresBB.txt'))
 q2 = True
 
-print('Your public key:\n', pubkeyFromFile, '\nsent it to your friend')
+#print('Your public key:\n', pubkeyFromFile, '\nsent it to your friend')
 
 while q2 == True:
     try:
