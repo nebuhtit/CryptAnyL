@@ -200,14 +200,14 @@ def enfile(FileForEnc):
     return key
 print(enfile('aa.png'))
 
-def defile(FileForDec):
+def defile(FileForDec, key):
     # DEcrypting file
     try:
         os.mkdir("Down_files")
     except FileExistsError:
         pass
     FileForDec = str(FileForDec)
-    key = input('past key of file:').encode('utf8')
+    key = key.encode('utf8')
     key = base64.urlsafe_b64decode(key)
     fernet = Fernet(key)
     with open(FileForDec, 'rb') as new:
@@ -216,4 +216,4 @@ def defile(FileForDec):
     newfile = fernet.decrypt(nnew)
     with open(name, 'wb') as f:
         f.write(newfile)
-defile('aa.png.prcp')
+defile('aa.png.prcp', input('past key of file:'))
