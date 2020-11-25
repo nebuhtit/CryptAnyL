@@ -5,6 +5,7 @@ who = 'BB'
 print('-h = list of commands; список команд')
 
 def uslovia(inputt):
+    inputt = str(inputt)
     # Comands for input
     global pasw, pubkeyFromFile
     what_to_do = ''
@@ -14,7 +15,12 @@ def uslovia(inputt):
 -h or -help = list of commands; список команд
 -mypublic = your public key; Ваши публичные ключи
 -newkeys = create new privat and public keys encrypted by password; Создайте новые приватные и публичные ключи зашифрованные паролем
-While chat:
+
+-f + ' ' + path to file; путь до файла  =  It encrypts file and puts it in For_sent. Send this file with stiring of key. Don't encrypted this key by Fiend's key, it's already encrypted, just send file and key. ; Шифрует файл и кладет его в For_sent. Отправьте этот файл и ключ. Не стоит шифровать ключ по ключам друга, они уже зашифрованы по ним.
+
+-ff + ' ' + path to encrypted file; путь до зашифрованного файла + ' ' + key; ключ  =  It decrypts file and puts it in Down_files. For decrypt file, use key. Don't decrypt key, it works automatically. Расшифрововает файл и кладет в Down_files. Используйте ключ. Не расшифровайте ключ, вставте как есть, этопроизойдет автоматически.
+
+While chat ; Во время переписки:
     [enter] = Pass this part; Пропустить это действие
         """)
         what_to_do = 'continue'
@@ -36,6 +42,42 @@ While chat:
                 break
     if str(inputt) == '-q':
         quit()
+
+    try:
+        if re.match(r'-f',inputt).group(0) == '-f':
+            path = inputt.split('-f ')[1]
+            #print(path)
+            key_for_file = enfile(path)
+            INP_Fkeys = dec_F_import(pasw, 'friendsresBB.txt')
+            INP_Fkeys = b64out(INP_Fkeys)
+            key_for_file = en(key_for_file, INP_Fkeys)
+            print('key_for_file:', key_for_file)
+            print('File encrypted in For_sent')
+            # new_path = os.path(str(os.path.basename(str(path)) + '.prcp'))
+            # print(new_path)
+            print('send this encrypted file and key to the friend')
+
+            what_to_do = 'break'
+    except Exception as e:
+        print(extract_tb(exc_info()[2])[0][1], e)
+        pass
+
+    try:
+        if re.match(r'-ff', inputt).group(0) == '-ff':
+            path = inputt.split(' ')[1]
+            key = inputt.split(' ')[2]
+            privatkey = dec_F_import(pasw, 'personalresBB.txt')
+            key = re.sub(r'\s', '', key)
+            key = de(key, privatkey)
+            print(path)
+            defile(path, key)
+            print('File decrypted successfully in Down_files')
+            # new_path = os.path(str(re.sub(r'.prcp', '', os.path.basename(str(path)))))
+            # print(new_path)
+            what_to_do = 'break'
+    except Exception as e:
+        print(extract_tb(exc_info()[2])[0][1], e)
+        pass
 
     if str(inputt) == '-mypublic':
         q = True
@@ -74,14 +116,7 @@ except FileNotFoundError as e:
         #pasw, what_to_do = ifif('-newkeys', who)
         uslovia('-newkeys')
         q = False
-        # print(extract_tb(exc_info()[2])[0][1], e)
-        # pubkey, privkey = newKeys()
-        # pasw = input('Create new password:')
-        # enc_F_save(pasw, privkey, 'personalresBB.txt')
-        # enc_F_save(pasw, pubkey, 'publicresBB.txt')
-        # pubkeyFromFile = b64in(dec_F_import(pasw, 'publicresBB.txt'))
-        # #print('Your public key:', pubkeyFromFile, '\nsent it to your friend')
-        # q = False
+
 except Exception as e:
     print(extract_tb(exc_info()[2])[0][1], e)
 q0 = True
@@ -93,38 +128,6 @@ while q0 == True:
             continue
         elif usl == 'break':
             break
-        # if str(pasw) == '-newkeys':
-        #     pasw = input('Create new password:')
-        #     createNewkeys('BB', pasw)
-        #     pubkeyFromFile = b64in(dec_F_import(pasw, 'publicresBB.txt'))
-        #     continue
-        # if str(pasw) == '-q':
-        #     quit()
-        # if str(pasw) == '-mypublic':
-        #     q = True
-        #     while q == True:
-        #         try:
-        #             pasw = input('Enter password:')
-        #             pubkeyFromFile = b64in(dec_F_import(pasw, 'publicres' + who + '.txt'))
-        #             #print('Your public key:', pubkeyFromFile, '\nsent it to your friend')
-        #             q0 = False
-        #             what_to_do = 'continue'
-        #             break
-        #             # return pasw, what_to_do
-        #         except FileNotFoundError as e:
-        #             print(extract_tb(exc_info()[2])[0][1], e)
-        #             pasw = input('Keys are not exist. Create new password:')
-        #             createNewkeys(who, pasw)
-        #             pubkeyFromFile = b64in(dec_F_import(pasw, 'publicres' + who + '.txt'))
-        #             q0 = False
-        #             what_to_do = 'continue'
-        #             break
-        #             # return pasw, what_to_do
-        #         except Exception as e:
-        #             print(extract_tb(exc_info()[2])[0][1], e)
-        #             print('password is not correct or file with mistake, try again.')
-        #             continue
-
         privatkey = dec_F_import(pasw, 'personalresBB.txt')
         q0 = False
         break
@@ -136,22 +139,7 @@ while q0 == True:
         print(extract_tb(exc_info()[2])[0][1], e)
         print('password is not correct or file with mistake, try again.')
         continue
-# while q == True:
-#     try:
-#         if q0 == False:
-#             break
-#         else:
-#             pasw = input('Enter password:')
-#         if str(pasw) == '-newkeys':
-#             createNewkeys('BB')
-#         pubkeyFromFile = b64in(dec_F_import(pasw, 'publicresBB.txt'))
-#         q = False
-#         break
-#     except Exception as e:
-#         print(extract_tb(exc_info()[2])[0][1], e)
-#         print(
-#             'password is not correct or file with mistake, try again.\n-newkeys recreate your keys but you loos your priveus messages')  # Дописать возможность создания новых публичных ключей со стиранием старых.
-#         continue
+
 pubkeyFromFile = b64in(dec_F_import(pasw, 'publicresBB.txt'))
 q2 = True
 
@@ -176,10 +164,6 @@ while q2 == True:
     enc_F_save(pasw, INP_Fkeys, 'friendsresBB.txt')
     privatkey = dec_F_import(pasw, 'personalresBB.txt')
     break
-
-
-
-
 
 q3 = True
 while q3 == True:

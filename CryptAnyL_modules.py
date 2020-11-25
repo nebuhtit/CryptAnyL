@@ -189,7 +189,7 @@ def createNewkeys(NIK, pasw):
 def enfile(FileForEnc):
     # ENcrypting file
     try:
-        os.mkdir("Files_for_send")
+        os.mkdir("For_sent")
     except FileExistsError:
         pass
     FileForEnc = str(FileForEnc)
@@ -198,9 +198,8 @@ def enfile(FileForEnc):
     with open(FileForEnc, 'rb') as f:
         ff = f.read()
     res = fernet.encrypt(ff)
-    with open(str('Files_for_send/'+os.path.basename(FileForEnc)+'.prcp'), 'wb') as f:
+    with open(str('For_sent/'+os.path.basename(FileForEnc)+'.prcp'), 'wb') as f:
         f.write(res)
-    os.rename()
     key = base64.urlsafe_b64encode(key).decode('utf8')
     return key
 #print(enfile('aa.png'))
@@ -217,7 +216,7 @@ def defile(FileForDec, key):
     fernet = Fernet(key)
     with open(FileForDec, 'rb') as new:
         nnew = new.read()
-    name = 'Down_files/' + re.sub(r'.prcp', '', FileForDec)
+    name = 'Down_files/' + re.sub(r'.prcp', '', os.path.basename(FileForDec))
     newfile = fernet.decrypt(nnew)
     with open(name, 'wb') as f:
         f.write(newfile)

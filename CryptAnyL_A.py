@@ -15,7 +15,12 @@ def uslovia(inputt):
 -h or -help = list of commands; список команд
 -mypublic = your public key; Ваши публичные ключи
 -newkeys = create new privat and public keys encrypted by password; Создайте новые приватные и публичные ключи зашифрованные паролем
-While chat:
+
+-f + ' ' + path to file; путь до файла  =  It encrypts file and puts it in For_sent. Send this file with stiring of key. Don't encrypted this key by Fiend's key, it's already encrypted, just send file and key. ; Шифрует файл и кладет его в For_sent. Отправьте этот файл и ключ. Не стоит шифровать ключ по ключам друга, они уже зашифрованы по ним.
+
+-ff + ' ' + path to encrypted file; путь до зашифрованного файла + ' ' + key; ключ  =  It decrypts file and puts it in Down_files. For decrypt file, use key. Don't decrypt key, it works automatically. Расшифрововает файл и кладет в Down_files. Используйте ключ. Не расшифровайте ключ, вставте как есть, этопроизойдет автоматически.
+
+While chat ; Во время переписки:
     [enter] = Pass this part; Пропустить это действие
         """)
         what_to_do = 'continue'
@@ -41,17 +46,35 @@ While chat:
     try:
         if re.match(r'-f',inputt).group(0) == '-f':
             path = inputt.split('-f ')[1]
-            print(path)
+            #print(path)
             key_for_file = enfile(path)
-            print(key_for_file)
+            INP_Fkeys = dec_F_import(pasw, 'friendsresAA.txt')
+            INP_Fkeys = b64out(INP_Fkeys)
+            key_for_file = en(key_for_file, INP_Fkeys)
+            print('key_for_file:', key_for_file)
+            print('File encrypted in For_sent')
+            # new_path = os.path(str(os.path.basename(str(path)) + '.prcp'))
+            # print(new_path)
+            print('send this encrypted file and key to the friend')
+
+            what_to_do = 'break'
     except Exception as e:
         print(extract_tb(exc_info()[2])[0][1], e)
         pass
 
     try:
         if re.match(r'-ff', inputt).group(0) == '-ff':
-            path = inputt.split('-ff ')[1]
+            path = inputt.split(' ')[1]
+            key = inputt.split(' ')[2]
+            privatkey = dec_F_import(pasw, 'personalresAA.txt')
+            key = re.sub(r'\s', '', key)
+            key = de(key, privatkey)
             print(path)
+            defile(path, key)
+            print('File decrypted successfully in Down_files')
+            # new_path = os.path(str(re.sub(r'.prcp', '', os.path.basename(str(path)))))
+            # print(new_path)
+            what_to_do = 'break'
     except Exception as e:
         print(extract_tb(exc_info()[2])[0][1], e)
         pass
