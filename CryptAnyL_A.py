@@ -5,6 +5,7 @@ who = 'AA'
 print('-h = list of commands; список команд')
 
 def uslovia(inputt):
+    inputt = str(inputt)
     # Comands for input
     global pasw, pubkeyFromFile
     what_to_do = ''
@@ -36,6 +37,24 @@ While chat:
                 break
     if str(inputt) == '-q':
         quit()
+
+    try:
+        if re.match(r'-f',inputt).group(0) == '-f':
+            path = inputt.split('-f ')[1]
+            print(path)
+            key_for_file = enfile(path)
+            print(key_for_file)
+    except Exception as e:
+        print(extract_tb(exc_info()[2])[0][1], e)
+        pass
+
+    try:
+        if re.match(r'-ff', inputt).group(0) == '-ff':
+            path = inputt.split('-ff ')[1]
+            print(path)
+    except Exception as e:
+        print(extract_tb(exc_info()[2])[0][1], e)
+        pass
 
     if str(inputt) == '-mypublic':
         q = True
