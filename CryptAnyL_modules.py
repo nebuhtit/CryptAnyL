@@ -185,22 +185,35 @@ def createNewkeys(NIK, pasw):
     pubkeyFromFile = b64in(dec_F_import(pasw, 'publicres'+NIK+'.txt'))
     #print('Your public key:', pubkeyFromFile, '\nsent it to your friend')
 
-def enfile():
+
+def enfile(FileForEnc):
+    # ENcrypting file
+    FileForEnc = str(FileForEnc)
     key = Fernet.generate_key()
-    print(key)
     fernet = Fernet(key)
-    with open('aa.png', 'rb') as f:
+    with open(FileForEnc, 'rb') as f:
         ff = f.read()
     res = fernet.encrypt(ff)
-    print(res)
-
-    with open('aa.png.encrypted', 'wb') as f:
+    with open(str(FileForEnc+'.prcp'), 'wb') as f:
         f.write(res)
+    key = base64.urlsafe_b64encode(key).decode('utf8')
+    return key
+print(enfile('aa.png'))
 
-    with open('aa.png.encrypted', 'rb') as new:
+def defile(FileForDec):
+    # DEcrypting file
+    try:
+        os.mkdir("Down_files")
+    except FileExistsError:
+        pass
+    FileForDec = str(FileForDec)
+    key = input('past key of file:').encode('utf8')
+    key = base64.urlsafe_b64decode(key)
+    fernet = Fernet(key)
+    with open(FileForDec, 'rb') as new:
         nnew = new.read()
-
+    name = 'Down_files/' + re.sub(r'.prcp', '', FileForDec)
     newfile = fernet.decrypt(nnew)
-
-    with open('newfile.png', 'wb') as f:
+    with open(name, 'wb') as f:
         f.write(newfile)
+defile('aa.png.prcp')
