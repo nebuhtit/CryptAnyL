@@ -10,6 +10,8 @@ from sys import exc_info
 from traceback import extract_tb
 import os
 from textwrap import wrap
+from tkinter import Tk
+from tkinter.filedialog import askopenfilename
 
 def newKeys():
     # Creates new keys

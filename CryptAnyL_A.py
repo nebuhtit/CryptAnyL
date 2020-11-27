@@ -18,7 +18,7 @@ def uslovia(inputt):
 
 -f + ' ' + path to file; путь до файла  =  It encrypts file and puts it in For_sent. Send this file with stiring of key. Don't encrypted this key by Fiend's key, it's already encrypted, just send file and key. ; Шифрует файл и кладет его в For_sent. Отправьте этот файл и ключ. Не стоит шифровать ключ по ключам друга, они уже зашифрованы по ним.
 
--ff + ' ' + path to encrypted file; путь до зашифрованного файла + ' ' + key; ключ  =  It decrypts file and puts it in Down_files. For decrypt file, use key. Don't decrypt key, it works automatically. Расшифрововает файл и кладет в Down_files. Используйте ключ. Не расшифровайте ключ, вставте так же, это произойдет автоматически.
+-F + ' ' + ' ' + key; ключ + (path to encrypted file; путь до зашифрованного файла) =  It decrypts file and puts it in Down_files. For decrypt file, use key. Don't decrypt key, it works automatically. Расшифрововает файл и кладет в Down_files. Используйте ключ. Не расшифровайте ключ, вставте так же, это произойдет автоматически.
 While chat ; Во время переписки:
     [enter] = Pass this part; Пропустить это действие
         
@@ -48,7 +48,9 @@ This pragram is based on open source libraries. The author is not responsible fo
 
     try:
         if re.match(r'-f',inputt).group(0) == '-f':
-            path = inputt.split('-f ')[1]
+            Tk().withdraw()  # we don't want a full GUI, so keep the root window from appearing
+            path = askopenfilename()  # show an "Open" dialog box and return the path to the selected file
+            #path = inputt.split('-f ')[1]
             #print(path)
             key_for_file = enfile(path)
             INP_Fkeys = dec_F_import(pasw, 'friendsresAA.txt')
@@ -66,9 +68,12 @@ This pragram is based on open source libraries. The author is not responsible fo
         pass
 
     try:
-        if re.match(r'-ff', inputt).group(0) == '-ff':
-            path = inputt.split(' ')[1]
-            key = inputt.split(' ')[2]
+        if re.match(r'-F', inputt).group(0) == '-F':
+            key = inputt.split(' ')[1]
+            Tk().withdraw()
+            path = askopenfilename()
+            #path = inputt.split(' ')[2]
+
             privatkey = dec_F_import(pasw, 'personalresAA.txt')
             key = re.sub(r'\s', '', key)
             key = de(key, privatkey)
