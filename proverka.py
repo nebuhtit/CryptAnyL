@@ -1,6 +1,2 @@
-from tkinter import Tk
-from tkinter.filedialog import askopenfilename
-
-Tk().withdraw() # we don't want a full GUI, so keep the root window from appearing
-filename = askopenfilename() # show an "Open" dialog box and return the path to the selected file
-#print(filename)
+myEncryptM = 'kek'
+print(str('{color}'+'Sent this text to your friend:'+'{endcolor}').format(color='\033[37m', endcolor='\033[0m'), myEncryptM)

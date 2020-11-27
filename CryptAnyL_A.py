@@ -2,7 +2,7 @@
 #
 from CryptAnyL_modules import *
 who = 'AA'
-print('-h = list of commands; список команд')
+print(str('{color}'+'-h = list of commands; список команд'+'{endcolor}').format(color='\033[37m', endcolor='\033[0m'))
 
 def uslovia(inputt):
     inputt = str(inputt)
@@ -128,7 +128,7 @@ This pragram is based on open source libraries. The author is not responsible fo
 
         while q == True:
             try:
-                pasw = input('Enter password:')
+                pasw = input(str('{color}'+'Enter password:'+'{endcolor}').format(color='\033[37m', endcolor='\033[0m'))
                 pubkeyFromFile = b64in(dec_F_import(pasw, 'publicres' + who + '.txt'))
                 # print('Your public key:', pubkeyFromFile, '\nsent it to your friend')
                 q0 = False
@@ -166,7 +166,7 @@ except Exception as e:
 q0 = True
 while q0 == True:
     try:
-        pasw = input('Enter password:')
+        pasw = input(str('{color}'+'Enter password:'+'{endcolor}').format(color='\033[37m', endcolor='\033[0m'))
         usl = uslovia(pasw)
         if usl == 'continue':
             continue
@@ -177,7 +177,7 @@ while q0 == True:
         break
     except NameError as e:
         print(extract_tb(exc_info()[2])[0][1], e)
-        pasw = input('Enter password:')
+        pasw = input(str('{color}'+'Enter password:'+'{endcolor}').format(color='\033[37m', endcolor='\033[0m'))
         continue
     except Exception as e:
         print(extract_tb(exc_info()[2])[0][1], e)
@@ -212,7 +212,7 @@ while q2 == True:
 q3 = True
 while q3 == True:
     try:
-        INP_sent = input("Write here your message:")
+        INP_sent = input(str('{blue}'+'Write here your message:'+'{endcolor}').format(blue='\033[37m', endcolor='\033[0m'))
 
         usl = uslovia(INP_sent)
         if usl == 'continue':
@@ -230,10 +230,10 @@ while q3 == True:
             myEncryptM = en(INP_sent, INP_Fkeys)
             INP_Fkeys = b64in(INP_Fkeys)
 
-            print('Sent this text to your friend:',myEncryptM)
+            print(str('{color}'+'Sent this text to your friend:'+'{endcolor}').format(color='\033[37m', endcolor='\033[0m'), myEncryptM)
 
         #INP_Fmessage = input('past here friends encrypted message\n:')
-        INP_Fmessage = input('Past here friends encrypted message\n:')
+        INP_Fmessage = input(str('{color}'+'Past here friends encrypted message\n:'+'{endcolor}').format(color='\033[37m', endcolor='\033[0m'))
         if INP_Fmessage == '':
             continue
         usl = uslovia(INP_Fmessage)
@@ -247,7 +247,7 @@ while q3 == True:
         else:
             INP_Fmessage = re.sub(r'\s', '', INP_Fmessage)
             F_encrypted_m = de(INP_Fmessage, privatkey)
-            print(F_encrypted_m)
+            print(str('{color}'+F_encrypted_m+'{endcolor}').format(color='\033[32m', endcolor='\033[0m'))
     except Exception as e:
         print(extract_tb(exc_info()[2])[0][1],e)
         continue
