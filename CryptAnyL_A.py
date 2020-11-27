@@ -16,9 +16,10 @@ def uslovia(inputt):
 -mypublic = your public key; Ваши публичные ключи
 -newkeys = create new privat and public keys encrypted by password; Создайте новые приватные и публичные ключи зашифрованные паролем
 
--f + ' ' + path to file; путь до файла  =  It encrypts file and puts it in For_sent. Send this file with stiring of key. Don't encrypted this key by Fiend's key, it's already encrypted, just send file and key. ; Шифрует файл и кладет его в For_sent. Отправьте этот файл и ключ. Не стоит шифровать ключ по ключам друга, они уже зашифрованы по ним.
+-f + ' ' + choose path to file; выберите путь до файла  =  It encrypts file and puts it in For_sent. Send this file with stiring of key. Don't encrypted this key by Fiend's key, it's already encrypted, just send file and key. ; Шифрует файл и кладет его в For_sent. Отправьте этот файл и ключ. Не стоит шифровать ключ по ключам друга, они уже зашифрованы по ним. OR USE -p + ' ' + path to file; путь до файла.
 
--F + ' ' + ' ' + key; ключ + (path to encrypted file; путь до зашифрованного файла) =  It decrypts file and puts it in Down_files. For decrypt file, use key. Don't decrypt key, it works automatically. Расшифрововает файл и кладет в Down_files. Используйте ключ. Не расшифровайте ключ, вставте так же, это произойдет автоматически.
+-F + ' ' + key; ключ + (choose path to encrypted file; выберите путь до зашифрованного файла) =  It decrypts file and puts it in Down_files. For decrypt file, use key. Don't decrypt key, it works automatically. Расшифрововает файл и кладет в Down_files. Используйте ключ. Не расшифровайте ключ, вставте так же, это произойдет автоматически. OR USE -P + ' ' + key; ключ + (path to encrypted file; путь до зашифрованного файла)
+-
 While chat ; Во время переписки:
     [enter] = Pass this part; Пропустить это действие
         
@@ -74,6 +75,41 @@ This pragram is based on open source libraries. The author is not responsible fo
             path = askopenfilename()
             #path = inputt.split(' ')[2]
 
+            privatkey = dec_F_import(pasw, 'personalresAA.txt')
+            key = re.sub(r'\s', '', key)
+            key = de(key, privatkey)
+            print(path)
+            defile(path, key)
+            print('File decrypted successfully in Down_files')
+            # new_path = os.path(str(re.sub(r'.prcp', '', os.path.basename(str(path)))))
+            # print(new_path)
+            what_to_do = 'break'
+    except Exception as e:
+        #print(extract_tb(exc_info()[2])[0][1], e)
+        pass
+    try:
+        if re.match(r'-p',inputt).group(0) == '-p':
+            path = inputt.split(' ')[1]
+            print(path)
+            key_for_file = enfile(path)
+            INP_Fkeys = dec_F_import(pasw, 'friendsresAA.txt')
+            INP_Fkeys = b64out(INP_Fkeys)
+            key_for_file = en(key_for_file, INP_Fkeys)
+            print('key_for_file:', key_for_file)
+            print('File encrypted in For_sent')
+            # new_path = os.path(str(os.path.basename(str(path)) + '.prcp'))
+            # print(new_path)
+            print('send this encrypted file and key to the friend')
+
+            what_to_do = 'break'
+    except Exception as e:
+        #print(extract_tb(exc_info()[2])[0][1], e)
+        pass
+
+    try:
+        if re.match(r'-P', inputt).group(0) == '-P':
+            key = inputt.split(' ')[1]
+            path = inputt.split(' ')[2]
             privatkey = dec_F_import(pasw, 'personalresAA.txt')
             key = re.sub(r'\s', '', key)
             key = de(key, privatkey)
