@@ -18,7 +18,8 @@ def uslovia(inputt):
 -h or -help = list of commands; список команд
 -mypublic = your public key; Ваши публичные ключи
 -newkeys = create new privat and public keys encrypted by password; Создайте новые приватные и публичные ключи зашифрованные паролем
--clearall = clear keys of privat, public, fiend also Down_files For_sent
+-kfriend = key of friend ; ключ друга
+-clearall = clear keys of privat, public, fiend also Down_files and For_sent ; удаляет приватные, публичные ключи и ключи друга а так же Down_files и For_sent.
 -cl-p = clear public
 -cl-pr = clear privat
 -cl-ppr = clear privat public
@@ -171,6 +172,7 @@ This pragram is based on open source libraries. The author is not responsible fo
             shutil.rmtree(str(os.getcwd()+'/'+'For_sent'))
         except OSError as e:
             pass
+        what_to_do = 'continue'
 
     if str(inputt) == '-cl-f':
         # clear friend's key
@@ -179,6 +181,7 @@ This pragram is based on open source libraries. The author is not responsible fo
             print('friends cleared, but check in folder')
         except Exception as e:
             print(extract_tb(exc_info()[2])[0][1],e)
+        what_to_do = 'continue'
 
     if str(inputt) == '-cl-pr':
         #clear privat key
@@ -187,6 +190,7 @@ This pragram is based on open source libraries. The author is not responsible fo
             print('privat cleared, but check in folder')
         except Exception as e:
             print(extract_tb(exc_info()[2])[0][1],e)
+        what_to_do = 'continue'
 
     if str(inputt) == '-cl-ppr':
         # clear privat public keys
@@ -197,6 +201,7 @@ This pragram is based on open source libraries. The author is not responsible fo
             print('pub cleared, but check in folder')
         except Exception as e:
             print(extract_tb(exc_info()[2])[0][1],e)
+        what_to_do = 'continue'
 
     if str(inputt) == '-cl-p':
         # clear public key
@@ -205,6 +210,7 @@ This pragram is based on open source libraries. The author is not responsible fo
             print('pub cleared, but check in folder')
         except Exception as e:
             print(extract_tb(exc_info()[2])[0][1],e)
+        what_to_do = 'continue'
 
     if str(inputt) == '-mypublic':
         q = True
@@ -233,6 +239,15 @@ This pragram is based on open source libraries. The author is not responsible fo
                 print('password is not correct or file with mistake, try again.')
                 what_to_do = 'continue'
                 continue
+
+    if str(inputt) == '-kfriend':
+        pasw = getpass.getpass()
+        FriendKFromFile = b64in(dec_F_import(pasw, 'friendsres' + who + '.txt'))
+        # print('Your public key:', pubkeyFromFile, '\nsent it to your friend')
+        q0 = False
+        what_to_do = 'break'
+        print("Friend's key:", FriendKFromFile, '\n')
+        what_to_do = 'continue'
     return what_to_do
         # continue
 q = True
