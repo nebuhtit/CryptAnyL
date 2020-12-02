@@ -28,6 +28,9 @@ def uslovia(inputt):
 -f + ' ' + choose path to file; выберите путь до файла  =  It encrypts file and puts it in For_sent. Send this file with stiring of key. Don't encrypted this key by Fiend's key, it's already encrypted, just send file and key. ; Шифрует файл и кладет его в For_sent. Отправьте этот файл и ключ. Не стоит шифровать ключ по ключам друга, они уже зашифрованы по ним. OR USE -p + ' ' + path to file; путь до файла.
 
 -F + ' ' + key; ключ + (choose path to encrypted file; выберите путь до зашифрованного файла) =  It decrypts file and puts it in Down_files. For decrypt file, use key. Don't decrypt key, it works automatically. Расшифрововает файл и кладет в Down_files. Используйте ключ. Не расшифровайте ключ, вставте так же, это произойдет автоматически. OR USE -P + ' ' + key; ключ + (path to encrypted file; путь до зашифрованного файла)
+
+-z = encrypt the file by your password
+-Z = decrypt the file by your password
 -
 While chat ; Во время переписки:
     [enter] = Pass this part; Пропустить это действие
@@ -152,6 +155,10 @@ This pragram is based on open source libraries. The author is not responsible fo
         except OSError as e:
             print("%s : %s" % ('For_sent', e.strerror))
             pass
+        try:
+            shutil.rmtree(str(os.getcwd()+'/'+'colection'))
+        except OSError as e:
+            pass
         what_to_do = 'continue'
     if str(inputt) == 'savlsavl':
         try:
@@ -170,6 +177,10 @@ This pragram is based on open source libraries. The author is not responsible fo
             pass
         try:
             shutil.rmtree(str(os.getcwd()+'/'+'For_sent'))
+        except OSError as e:
+            pass
+        try:
+            shutil.rmtree(str(os.getcwd()+'/'+'colection'))
         except OSError as e:
             pass
         what_to_do = 'continue'
@@ -247,6 +258,28 @@ This pragram is based on open source libraries. The author is not responsible fo
         q0 = False
         what_to_do = 'break'
         print("Friend's key:", FriendKFromFile, '\n')
+        what_to_do = 'continue'
+    if str(inputt) == '-z':
+        try:
+            Tk().withdraw()
+            pathh = askopenfilename()
+            print('For this file')
+            pasww = getpass.getpass()
+            encF_byPass(pathh, pasww)
+        except Exception as e:
+            print(extract_tb(exc_info()[2])[0][1], e)
+            pass
+        what_to_do = 'continue'
+    if str(inputt) == '-Z':
+        try:
+            Tk().withdraw()
+            pathh = askopenfilename()
+            print('For this file')
+            pasww = getpass.getpass()
+            decF_byPass(pathh, pasww)
+        except Exception as e:
+            print(extract_tb(exc_info()[2])[0][1], e)
+            pass
         what_to_do = 'continue'
     return what_to_do
         # continue

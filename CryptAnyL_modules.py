@@ -106,7 +106,10 @@ def de(en_m, priv):
 
 def encrypting(i_password, text):
     # Encrypting str by password
-    text = text.encode('utf8')
+    try:
+        text = text.encode('utf8')
+    except:
+        pass
     iu_password = i_password.encode('utf-8')
     password = iu_password
     salt = b'\xcfTQN\xd3\xb1\x1c\x96\x9eg\xe4\x82\xd2\xa3>!'
@@ -134,7 +137,10 @@ def encrypting(i_password, text):
 
 def decrypting(i_password, enc_text):
     # Decripting previos encrypted text by the same password
-    iu_password = i_password.encode('utf-8')
+    try:
+        iu_password = i_password.encode('utf-8')
+    except:
+        pass
     password = iu_password
     salt = b'\xcfTQN\xd3\xb1\x1c\x96\x9eg\xe4\x82\xd2\xa3>!'
     kdf = PBKDF2HMAC(
@@ -154,7 +160,10 @@ def decrypting(i_password, enc_text):
 
     decryptedtext = f.decrypt(b_encod_enc_t)
     # print("decryptedtext: ", decryptedtext)
-    decryptedtext = decryptedtext.decode('utf8')
+    try:
+        decryptedtext = decryptedtext.decode('utf8')
+    except:
+        pass
     return decryptedtext
 # decryptedtext = decrypting('123',t_k2)
 # print(decryptedtext)
@@ -225,3 +234,72 @@ def defile(FileForDec, key):
     with open(name, 'wb') as f:
         f.write(newfile)
 #defile('aa.png.prcp', input('past key of file:'))
+
+def encF_byPass(path, pasw):
+    # Encrypt file by your Passw
+    with open(path, 'rb') as f:
+        ff = f.read()
+
+    iu_password = pasw.encode('utf-8')
+    password = iu_password
+    salt = b'\xcfTQN\xd3\xb1\x1c\x96\x9eg\xe4\x82\xd2\xa3>!'
+    kdf = PBKDF2HMAC(
+        algorithm=hashes.SHA256(),
+        length=32,
+        salt=salt,
+        iterations=100000,
+        backend=default_backend()
+    )
+    key = base64.urlsafe_b64encode(kdf.derive(password))
+    # print("key: ", key)
+    f = Fernet(key)
+    # print("f: ", f)
+    # text = input('Please, write text: ').encode('utf-8')
+    token = f.encrypt(ff)
+    try:
+        os.mkdir("colection")
+    except FileExistsError:
+        pass
+    with open(str('colection/'+os.path.basename(path)+'.prcp'), 'wb') as f:
+        f.write(token)
+    #print(f)
+# Tk().withdraw()
+# pathh = askopenfilename()
+# print('For this file')
+# pasww = getpass.getpass()
+# encF_byPass(pathh, pasww)
+
+def decF_byPass(path, pasw):
+    # Decrypt file by your Passw
+    with open(path, 'rb') as f:
+        ff = f.read()
+
+    password = pasw.encode('utf8')
+    salt = b'\xcfTQN\xd3\xb1\x1c\x96\x9eg\xe4\x82\xd2\xa3>!'
+    kdf = PBKDF2HMAC(
+        algorithm=hashes.SHA256(),
+        length=32,
+        salt=salt,
+        iterations=100000,
+        backend=default_backend()
+    )
+
+    key = base64.urlsafe_b64encode(kdf.derive(password))
+    f = Fernet(key)
+
+    decrypted = f.decrypt(ff)
+
+
+    #print(decrypted_fb)
+    try:
+        os.mkdir("colection")
+    except FileExistsError:
+        pass
+    with open(str('colection/'+re.sub(r'.prcp', '', os.path.basename(path))), 'wb') as f:
+        f.write(decrypted)
+
+# Tk().withdraw()
+# pathh = askopenfilename()
+# print('For this file')
+# pasww = getpass.getpass()
+# decF_byPass(pathh, pasww)

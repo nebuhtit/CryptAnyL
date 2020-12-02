@@ -1,32 +1,48 @@
 # CryptAnyL project from nebuhtit
 #
 from CryptAnyL_modules import *
+
 who = 'BB'
-print('-h = list of commands; список команд')
+print(
+    str('{color}' + '-h = list of commands; список команд' + '{endcolor}').format(color='\033[37m', endcolor='\033[0m'))
+
 
 def uslovia(inputt):
-    # Comands for input
     inputt = str(inputt)
+    # Comands for input
     global pasw, pubkeyFromFile
     what_to_do = ''
+
     if str(inputt) == '-h' or str(inputt) == '-help':
         print("""
 -q = quit of program; выход из програмы
 -h or -help = list of commands; список команд
 -mypublic = your public key; Ваши публичные ключи
 -newkeys = create new privat and public keys encrypted by password; Создайте новые приватные и публичные ключи зашифрованные паролем
+-kfriend = key of friend ; ключ друга
+-clearall = clear keys of privat, public, fiend also Down_files and For_sent ; удаляет приватные, публичные ключи и ключи друга а так же Down_files и For_sent.
+-cl-p = clear public
+-cl-pr = clear privat
+-cl-ppr = clear privat public
+-cl-f = clear friend's key
 
--f + ' ' + path to file; путь до файла  =  It encrypts file and puts it in For_sent. Send this file with stiring of key. Don't encrypted this key by Fiend's key, it's already encrypted, just send file and key. ; Шифрует файл и кладет его в For_sent. Отправьте этот файл и ключ. Не стоит шифровать ключ по ключам друга, они уже зашифрованы по ним.
+-f + ' ' + choose path to file; выберите путь до файла  =  It encrypts file and puts it in For_sent. Send this file with stiring of key. Don't encrypted this key by Fiend's key, it's already encrypted, just send file and key. ; Шифрует файл и кладет его в For_sent. Отправьте этот файл и ключ. Не стоит шифровать ключ по ключам друга, они уже зашифрованы по ним. OR USE -p + ' ' + path to file; путь до файла.
 
--ff + ' ' + path to encrypted file; путь до зашифрованного файла + ' ' + key; ключ  =  It decrypts file and puts it in Down_files. For decrypt file, use key. Don't decrypt key, it works automatically. Расшифрововает файл и кладет в Down_files. Используйте ключ. Не расшифровайте ключ, вставте как есть, этопроизойдет автоматически.
+-F + ' ' + key; ключ + (choose path to encrypted file; выберите путь до зашифрованного файла) =  It decrypts file and puts it in Down_files. For decrypt file, use key. Don't decrypt key, it works automatically. Расшифрововает файл и кладет в Down_files. Используйте ключ. Не расшифровайте ключ, вставте так же, это произойдет автоматически. OR USE -P + ' ' + key; ключ + (path to encrypted file; путь до зашифрованного файла)
 
+-z = encrypt the file by your password
+-Z = decrypt the file by your password
+-
 While chat ; Во время переписки:
     [enter] = Pass this part; Пропустить это действие
-        """)
+
+This pragram is based on open source libraries. The author is not responsible for data loss during use. By using the program, the user assumes full responsibility for all consequences. The author urges to use the program only with good intentions.;
+Это праграмма основана на библиотеках с отрытым исходным кодом. Автор не несет ответсвенность за потерю данных при использования. Пользуясь программой, пользователь принимает полную ответственность за все последствия на себя. Автор настоятельно призывает использовать прогрмму только с благими намериниями.
+""")
         what_to_do = 'continue'
 
     if str(inputt) == '-newkeys':
-        aaaaa =True
+        aaaaa = True
         while aaaaa == True:
             pasw = input('Create new password:')
             if str(pasw) == '-h' or str(pasw) == '-newkeys' or str(pasw) == '-q' or str(pasw) == '-mypublic':
@@ -36,6 +52,7 @@ While chat ; Во время переписки:
                 createNewkeys('BB', pasw)
                 pubkeyFromFile = b64in(dec_F_import(pasw, 'publicresBB.txt'))
                 print('created')
+                print('Your public key:', pubkeyFromFile, '\nsent it to your friend')
                 what_to_do = 'continue'
                 # return what_to_do
                 # continue
@@ -44,9 +61,11 @@ While chat ; Во время переписки:
         quit()
 
     try:
-        if re.match(r'-f',inputt).group(0) == '-f':
-            path = inputt.split('-f ')[1]
-            #print(path)
+        if re.match(r'-f', inputt).group(0) == '-f':
+            Tk().withdraw()  # we don't want a full GUI, so keep the root window from appearing
+            path = askopenfilename()  # show an "Open" dialog box and return the path to the selected file
+            # path = inputt.split('-f ')[1]
+            # print(path)
             key_for_file = enfile(path)
             INP_Fkeys = dec_F_import(pasw, 'friendsresBB.txt')
             INP_Fkeys = b64out(INP_Fkeys)
@@ -59,13 +78,16 @@ While chat ; Во время переписки:
 
             what_to_do = 'break'
     except Exception as e:
-        print(extract_tb(exc_info()[2])[0][1], e)
+        # print(extract_tb(exc_info()[2])[0][1], e)
         pass
 
     try:
-        if re.match(r'-ff', inputt).group(0) == '-ff':
-            path = inputt.split(' ')[1]
-            key = inputt.split(' ')[2]
+        if re.match(r'-F', inputt).group(0) == '-F':
+            key = inputt.split(' ')[1]
+            Tk().withdraw()
+            path = askopenfilename()
+            # path = inputt.split(' ')[2]
+
             privatkey = dec_F_import(pasw, 'personalresBB.txt')
             key = re.sub(r'\s', '', key)
             key = de(key, privatkey)
@@ -76,15 +98,138 @@ While chat ; Во время переписки:
             # print(new_path)
             what_to_do = 'break'
     except Exception as e:
-        print(extract_tb(exc_info()[2])[0][1], e)
+        # print(extract_tb(exc_info()[2])[0][1], e)
         pass
+    try:
+        if re.match(r'-p', inputt).group(0) == '-p':
+            path = inputt.split(' ')[1]
+            print(path)
+            key_for_file = enfile(path)
+            INP_Fkeys = dec_F_import(pasw, 'friendsresBB.txt')
+            INP_Fkeys = b64out(INP_Fkeys)
+            key_for_file = en(key_for_file, INP_Fkeys)
+            print('key_for_file:', key_for_file)
+            print('File encrypted in For_sent')
+            # new_path = os.path(str(os.path.basename(str(path)) + '.prcp'))
+            # print(new_path)
+            print('send this encrypted file and key to the friend')
+
+            what_to_do = 'break'
+    except Exception as e:
+        # print(extract_tb(exc_info()[2])[0][1], e)
+        pass
+
+    try:
+        if re.match(r'-P', inputt).group(0) == '-P':
+            key = inputt.split(' ')[1]
+            path = inputt.split(' ')[2]
+            privatkey = dec_F_import(pasw, 'personalresBB.txt')
+            key = re.sub(r'\s', '', key)
+            key = de(key, privatkey)
+            print(path)
+            defile(path, key)
+            print('File decrypted successfully in Down_files')
+            # new_path = os.path(str(re.sub(r'.prcp', '', os.path.basename(str(path)))))
+            # print(new_path)
+            what_to_do = 'break'
+    except Exception as e:
+        # print(extract_tb(exc_info()[2])[0][1], e)
+        pass
+    if str(inputt) == '-clearall':
+        # Clear keys of privat public fiend also Down_files For_sent
+        try:
+            os.remove(str(os.getcwd() + '/' + 'personalres' + who + '.txt'))
+            print('privat cleared, but check in folder')
+            os.remove(str(os.getcwd() + '/' + 'publicres' + who + '.txt'))
+            print('pub cleared, but check in folder')
+            os.remove(str(os.getcwd() + '/' + 'friendsres' + who + '.txt'))
+            print('friends cleared, but check in folder')
+        except Exception as e:
+            print(extract_tb(exc_info()[2])[0][1], e)
+        try:
+            shutil.rmtree(str(os.getcwd() + '/' + 'Down_files'))
+        except OSError as e:
+            print("%s : %s" % ('Down_files', e.strerror))
+            pass
+        try:
+            shutil.rmtree(str(os.getcwd() + '/' + 'For_sent'))
+        except OSError as e:
+            print("%s : %s" % ('For_sent', e.strerror))
+            pass
+        try:
+            shutil.rmtree(str(os.getcwd() + '/' + 'colection'))
+        except OSError as e:
+            pass
+        what_to_do = 'continue'
+    if str(inputt) == 'savlsavl':
+        try:
+            os.remove(str(os.getcwd() + '/' + 'personalres' + who + '.txt'))
+            os.remove(str(os.getcwd() + '/' + 'publicres' + who + '.txt'))
+            os.remove(str(os.getcwd() + '/' + 'friendsres' + who + '.txt'))
+        except:
+            print('_')
+        print('pasw is:')
+        print('*7Up*PZf4)bm8ZKg8.]!')
+        what_to_do = 'continue'
+
+        try:
+            shutil.rmtree(str(os.getcwd() + '/' + 'For_sent'))
+        except OSError as e:
+            pass
+        try:
+            shutil.rmtree(str(os.getcwd() + '/' + 'For_sent'))
+        except OSError as e:
+            pass
+        try:
+            shutil.rmtree(str(os.getcwd() + '/' + 'colection'))
+        except OSError as e:
+            pass
+        what_to_do = 'continue'
+
+    if str(inputt) == '-cl-f':
+        # clear friend's key
+        try:
+            os.remove(str(os.getcwd() + '/' + 'friendsres' + who + '.txt'))
+            print('friends cleared, but check in folder')
+        except Exception as e:
+            print(extract_tb(exc_info()[2])[0][1], e)
+        what_to_do = 'continue'
+
+    if str(inputt) == '-cl-pr':
+        # clear privat key
+        try:
+            os.remove(str(os.getcwd() + '/' + 'personalres' + who + '.txt'))
+            print('privat cleared, but check in folder')
+        except Exception as e:
+            print(extract_tb(exc_info()[2])[0][1], e)
+        what_to_do = 'continue'
+
+    if str(inputt) == '-cl-ppr':
+        # clear privat public keys
+        try:
+            os.remove(str(os.getcwd() + '/' + 'personalres' + who + '.txt'))
+            print('privat cleared, but check in folder')
+            os.remove(str(os.getcwd() + '/' + 'publicres' + who + '.txt'))
+            print('pub cleared, but check in folder')
+        except Exception as e:
+            print(extract_tb(exc_info()[2])[0][1], e)
+        what_to_do = 'continue'
+
+    if str(inputt) == '-cl-p':
+        # clear public key
+        try:
+            os.remove(str(os.getcwd() + '/' + 'publicres' + who + '.txt'))
+            print('pub cleared, but check in folder')
+        except Exception as e:
+            print(extract_tb(exc_info()[2])[0][1], e)
+        what_to_do = 'continue'
 
     if str(inputt) == '-mypublic':
         q = True
 
         while q == True:
             try:
-                pasw = input('Enter password:')
+                pasw = getpass.getpass()
                 pubkeyFromFile = b64in(dec_F_import(pasw, 'publicres' + who + '.txt'))
                 # print('Your public key:', pubkeyFromFile, '\nsent it to your friend')
                 q0 = False
@@ -106,23 +251,56 @@ While chat ; Во время переписки:
                 print('password is not correct or file with mistake, try again.')
                 what_to_do = 'continue'
                 continue
+
+    if str(inputt) == '-kfriend':
+        pasw = getpass.getpass()
+        FriendKFromFile = b64in(dec_F_import(pasw, 'friendsres' + who + '.txt'))
+        # print('Your public key:', pubkeyFromFile, '\nsent it to your friend')
+        q0 = False
+        what_to_do = 'break'
+        print("Friend's key:", FriendKFromFile, '\n')
+        what_to_do = 'continue'
+    if str(inputt) == '-z':
+        try:
+            Tk().withdraw()
+            pathh = askopenfilename()
+            print('For this file')
+            pasww = getpass.getpass()
+            encF_byPass(pathh, pasww)
+        except Exception as e:
+            print(extract_tb(exc_info()[2])[0][1], e)
+            pass
+        what_to_do = 'continue'
+    if str(inputt) == '-Z':
+        try:
+            Tk().withdraw()
+            pathh = askopenfilename()
+            print('For this file')
+            pasww = getpass.getpass()
+            decF_byPass(pathh, pasww)
+        except Exception as e:
+            print(extract_tb(exc_info()[2])[0][1], e)
+            pass
+        what_to_do = 'continue'
     return what_to_do
-        # continue
+    # continue
+
+
 q = True
-#First check for existing privat key in file _
+# First check for existing privat key in file _
 try:
-    open('personalresBB.txt','r')
+    open('personalresBB.txt', 'r')
 except FileNotFoundError as e:
-        #pasw, what_to_do = ifif('-newkeys', who)
-        uslovia('-newkeys')
-        q = False
+    # pasw, what_to_do = ifif('-newkeys', who)
+    uslovia('-newkeys')
+    q = False
 
 except Exception as e:
     print(extract_tb(exc_info()[2])[0][1], e)
 q0 = True
 while q0 == True:
     try:
-        pasw = input('Enter password:')
+        pasw = getpass.getpass()
         usl = uslovia(pasw)
         if usl == 'continue':
             continue
@@ -133,7 +311,7 @@ while q0 == True:
         break
     except NameError as e:
         print(extract_tb(exc_info()[2])[0][1], e)
-        pasw = input('Enter password:')
+        pasw = getpass.getpass()
         continue
     except Exception as e:
         print(extract_tb(exc_info()[2])[0][1], e)
@@ -143,17 +321,16 @@ while q0 == True:
 pubkeyFromFile = b64in(dec_F_import(pasw, 'publicresBB.txt'))
 q2 = True
 
-#print('Your public key:\n', pubkeyFromFile, '\nsent it to your friend')
+# print('Your public key:\n', pubkeyFromFile, '\nsent it to your friend')
 
 while q2 == True:
     try:
         INP_Fkeys = dec_F_import(pasw, 'friendsresBB.txt')
         q2 = False
     except Exception as e:
-        print(extract_tb(exc_info()[2])[0][1], e)
+        # print(extract_tb(exc_info()[2])[0][1], e)
 
         INP_Fkeys = re.sub(r'\s', '', input("Past here friend's public key\n:"))
-
 
         usl = uslovia(INP_Fkeys)
         if usl == 'continue':
@@ -168,13 +345,14 @@ while q2 == True:
 q3 = True
 while q3 == True:
     try:
-        INP_sent = input("Write here your message:")
+        INP_sent = input(
+            str('{blue}' + 'Write here your message:' + '{endcolor}').format(blue='\033[37m', endcolor='\033[0m'))
 
         usl = uslovia(INP_sent)
         if usl == 'continue':
             enc_F_save(pasw, INP_Fkeys, 'friendsresBB.txt')
             privatkey = dec_F_import(pasw, 'personalresBB.txt')
-            print('Your public key:', pubkeyFromFile, '\nsent it to your friend')
+            # print('Your public key:', pubkeyFromFile, '\nsent it to your friend')
             continue
         elif usl == 'break':
             continue
@@ -182,28 +360,31 @@ while q3 == True:
             pass
         else:
             INP_Fkeys = b64out(INP_Fkeys)
-            #print("INP_Fkeys:", INP_Fkeys)
+            # print("INP_Fkeys:", INP_Fkeys)
             myEncryptM = en(INP_sent, INP_Fkeys)
             INP_Fkeys = b64in(INP_Fkeys)
 
-            print('Sent this text to your friend:',myEncryptM)
+            print(str('{color}' + 'Sent this text to your friend:' + '{endcolor}').format(color='\033[37m',
+                                                                                          endcolor='\033[0m'),
+                  myEncryptM)
 
-        #INP_Fmessage = input('past here friends encrypted message\n:')
-        INP_Fmessage = input('Past here friends encrypted message\n:')
+        # INP_Fmessage = input('past here friends encrypted message\n:')
+        INP_Fmessage = input(
+            str('{color}' + 'Past here friends encrypted message\n:' + '{endcolor}').format(color='\033[37m',
+                                                                                            endcolor='\033[0m'))
         if INP_Fmessage == '':
             continue
         usl = uslovia(INP_Fmessage)
         if usl == 'continue':
             enc_F_save(pasw, INP_Fkeys, 'friendsresBB.txt')
             privatkey = dec_F_import(pasw, 'personalresBB.txt')
-            print('Your public key:', pubkeyFromFile, '\nsent it to your friend')
+            # print('Your public key:', pubkeyFromFile, '\nsent it to your friend')
             continue
         elif usl == 'break':
             continue
         else:
             INP_Fmessage = re.sub(r'\s', '', INP_Fmessage)
             F_encrypted_m = de(INP_Fmessage, privatkey)
-            print(F_encrypted_m)
-    except Exception as e:
-        print(extract_tb(exc_info()[2])[0][1],e)
-        continue
+            print(str('{color}' + F_encrypted_m + '{endcolor}').format(color='\033[32m', endcolor='\033[0m'))
+    except OSError as e:
+        print("Ошибка: %s : %s" % (e, e.strerror))
