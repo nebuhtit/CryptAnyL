@@ -128,7 +128,7 @@ This pragram is based on open source libraries. The author is not responsible fo
 
         while q == True:
             try:
-                pasw = input(str('{color}'+'Enter password:'+'{endcolor}').format(color='\033[37m', endcolor='\033[0m'))
+                pasw = getpass.getpass()
                 pubkeyFromFile = b64in(dec_F_import(pasw, 'publicres' + who + '.txt'))
                 # print('Your public key:', pubkeyFromFile, '\nsent it to your friend')
                 q0 = False
@@ -166,7 +166,7 @@ except Exception as e:
 q0 = True
 while q0 == True:
     try:
-        pasw = input(str('{color}'+'Enter password:'+'{endcolor}').format(color='\033[37m', endcolor='\033[0m'))
+        pasw = getpass.getpass()
         usl = uslovia(pasw)
         if usl == 'continue':
             continue
@@ -177,7 +177,7 @@ while q0 == True:
         break
     except NameError as e:
         print(extract_tb(exc_info()[2])[0][1], e)
-        pasw = input(str('{color}'+'Enter password:'+'{endcolor}').format(color='\033[37m', endcolor='\033[0m'))
+        pasw = getpass.getpass()
         continue
     except Exception as e:
         print(extract_tb(exc_info()[2])[0][1], e)
