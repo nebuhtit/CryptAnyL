@@ -18,6 +18,11 @@ def uslovia(inputt):
 -h or -help = list of commands; список команд
 -mypublic = your public key; Ваши публичные ключи
 -newkeys = create new privat and public keys encrypted by password; Создайте новые приватные и публичные ключи зашифрованные паролем
+-clearall = clear keys of privat, public, fiend also Down_files For_sent
+-cl-p = clear public
+-cl-pr = clear privat
+-cl-ppr = clear privat public
+-cl-f = clear friend's key
 
 -f + ' ' + choose path to file; выберите путь до файла  =  It encrypts file and puts it in For_sent. Send this file with stiring of key. Don't encrypted this key by Fiend's key, it's already encrypted, just send file and key. ; Шифрует файл и кладет его в For_sent. Отправьте этот файл и ключ. Не стоит шифровать ключ по ключам друга, они уже зашифрованы по ним. OR USE -p + ' ' + path to file; путь до файла.
 
@@ -126,7 +131,7 @@ This pragram is based on open source libraries. The author is not responsible fo
         #print(extract_tb(exc_info()[2])[0][1], e)
         pass
     if str(inputt) == '-clearall':
-        # Clear keys of pivat publick fiends also Down_files For_sent
+        # Clear keys of privat public fiend also Down_files For_sent
         try:
             os.remove(str(os.getcwd()+'/'+'personalres'+who+'.txt'))
             print('privat cleared, but check in folder')
@@ -168,6 +173,7 @@ This pragram is based on open source libraries. The author is not responsible fo
             pass
 
     if str(inputt) == '-cl-f':
+        # clear friend's key
         try:
             os.remove(str(os.getcwd() + '/' + 'friendsres' + who + '.txt'))
             print('friends cleared, but check in folder')
@@ -175,6 +181,7 @@ This pragram is based on open source libraries. The author is not responsible fo
             print(extract_tb(exc_info()[2])[0][1],e)
 
     if str(inputt) == '-cl-pr':
+        #clear privat key
         try:
             os.remove(str(os.getcwd() + '/' + 'personalres' + who + '.txt'))
             print('privat cleared, but check in folder')
@@ -182,6 +189,7 @@ This pragram is based on open source libraries. The author is not responsible fo
             print(extract_tb(exc_info()[2])[0][1],e)
 
     if str(inputt) == '-cl-ppr':
+        # clear privat public keys
         try:
             os.remove(str(os.getcwd() + '/' + 'personalres' + who + '.txt'))
             print('privat cleared, but check in folder')
@@ -191,6 +199,7 @@ This pragram is based on open source libraries. The author is not responsible fo
             print(extract_tb(exc_info()[2])[0][1],e)
 
     if str(inputt) == '-cl-p':
+        # clear public key
         try:
             os.remove(str(os.getcwd() + '/' + 'publicres' + who + '.txt'))
             print('pub cleared, but check in folder')
