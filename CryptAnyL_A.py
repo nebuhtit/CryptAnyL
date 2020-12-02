@@ -263,7 +263,7 @@ This pragram is based on open source libraries. The author is not responsible fo
         try:
             Tk().withdraw()
             pathh = askopenfilename()
-            print('For this file')
+            print('For encrypt file')
             pasww = getpass.getpass()
             encF_byPass(pathh, pasww)
         except Exception as e:
@@ -274,7 +274,7 @@ This pragram is based on open source libraries. The author is not responsible fo
         try:
             Tk().withdraw()
             pathh = askopenfilename()
-            print('For this file')
+            print('For decrypt file')
             pasww = getpass.getpass()
             decF_byPass(pathh, pasww)
         except Exception as e:
