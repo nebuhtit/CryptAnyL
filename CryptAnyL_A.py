@@ -2,7 +2,7 @@
 #
 from CryptAnyL_modules import *
 who = 'AA'
-print(str('{color}'+'-h = list of commands; список команд'+'{endcolor}').format(color='\033[37m', endcolor='\033[0m'))
+print(str('-h = list of commands; список команд'))
 
 def uslovia(inputt):
     inputt = str(inputt)
@@ -343,7 +343,7 @@ while q2 == True:
 q3 = True
 while q3 == True:
     try:
-        INP_sent = input(str('{blue}'+'Write here your message:'+'{endcolor}').format(blue='\033[37m', endcolor='\033[0m'))
+        INP_sent = input(str('Write here your message:'))
 
         usl = uslovia(INP_sent)
         if usl == 'continue':
@@ -361,10 +361,10 @@ while q3 == True:
             myEncryptM = en(INP_sent, INP_Fkeys)
             INP_Fkeys = b64in(INP_Fkeys)
 
-            print(str('{color}'+'Sent this text to your friend:'+'{endcolor}').format(color='\033[37m', endcolor='\033[0m'), myEncryptM)
+            print(str('Sent this text to your friend:'), myEncryptM)
 
         #INP_Fmessage = input('past here friends encrypted message\n:')
-        INP_Fmessage = input(str('{color}'+'Past here friends encrypted message\n:'+'{endcolor}').format(color='\033[37m', endcolor='\033[0m'))
+        INP_Fmessage = input('Past here friends encrypted message\n:')
         if INP_Fmessage == '':
             continue
         usl = uslovia(INP_Fmessage)
@@ -378,6 +378,6 @@ while q3 == True:
         else:
             INP_Fmessage = re.sub(r'\s', '', INP_Fmessage)
             F_encrypted_m = de(INP_Fmessage, privatkey)
-            print(str('{color}'+F_encrypted_m+'{endcolor}').format(color='\033[32m', endcolor='\033[0m'))
+            print(str(F_encrypted_m))
     except OSError as e:
         print("Ошибка: %s : %s" % (e, e.strerror))
