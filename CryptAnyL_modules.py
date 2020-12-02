@@ -10,6 +10,7 @@ from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from sys import exc_info
 from traceback import extract_tb
 import os
+import shutil
 from textwrap import wrap
 from tkinter import Tk
 from tkinter.filedialog import askopenfilename
@@ -163,14 +164,14 @@ def enc_F_save(password, stri, name):
     password = str(password)
     stri = str(stri)
     salt, encryptedtext = encrypting(password, stri)
-    with open(str(os.getcwd())+'/'+str(name), 'w') as f:
+    with open(str(os.getcwd()+'/'+str(name)), 'w') as f:
         f.write(str(encryptedtext))
 #enc_F_save('123', privkey)
 
 def dec_F_import(password, file):
     # Load data from file and decrypts it by password
     password = str(password)
-    with open(str(os.getcwd())+'/'+str(file), 'r') as ff:
+    with open(str(os.getcwd()+'/'+str(file)), 'r') as ff:
         f = ff.read()
     decryptedtext = decrypting(password, f)
     return decryptedtext

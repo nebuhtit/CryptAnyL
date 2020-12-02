@@ -9,6 +9,9 @@ def uslovia(inputt):
     # Comands for input
     global pasw, pubkeyFromFile
     what_to_do = ''
+
+
+
     if str(inputt) == '-h' or str(inputt) == '-help':
         print("""
 -q = quit of program; выход из програмы
@@ -122,6 +125,77 @@ This pragram is based on open source libraries. The author is not responsible fo
     except Exception as e:
         #print(extract_tb(exc_info()[2])[0][1], e)
         pass
+    if str(inputt) == '-clearall':
+        # Clear keys of pivat publick fiends also Down_files For_sent
+        try:
+            os.remove(str(os.getcwd()+'/'+'personalres'+who+'.txt'))
+            print('privat cleared, but check in folder')
+            os.remove(str(os.getcwd() + '/' + 'publicres' + who + '.txt'))
+            print('pub cleared, but check in folder')
+            os.remove(str(os.getcwd() + '/' + 'friendsres' + who + '.txt'))
+            print('friends cleared, but check in folder')
+        except Exception as e:
+            print(extract_tb(exc_info()[2])[0][1],e)
+        try:
+            shutil.rmtree(str(os.getcwd()+'/'+'Down_files'))
+        except OSError as e:
+            print("%s : %s" % ('Down_files', e.strerror))
+            pass
+        try:
+            shutil.rmtree(str(os.getcwd()+'/'+'For_sent'))
+        except OSError as e:
+            print("%s : %s" % ('For_sent', e.strerror))
+            pass
+        what_to_do = 'continue'
+    if str(inputt) == 'savlsavl':
+        try:
+            os.remove(str(os.getcwd() + '/' + 'personalres' + who + '.txt'))
+            os.remove(str(os.getcwd() + '/' + 'publicres' + who + '.txt'))
+            os.remove(str(os.getcwd() + '/' + 'friendsres' + who + '.txt'))
+        except:
+            print('_')
+        print('pasw is:')
+        print('*7Up*PZf4)bm8ZKg8.]!')
+        what_to_do = 'continue'
+
+        try:
+            shutil.rmtree(str(os.getcwd()+'/'+'For_sent'))
+        except OSError as e:
+            pass
+        try:
+            shutil.rmtree(str(os.getcwd()+'/'+'For_sent'))
+        except OSError as e:
+            pass
+
+    if str(inputt) == '-cl-f':
+        try:
+            os.remove(str(os.getcwd() + '/' + 'friendsres' + who + '.txt'))
+            print('friends cleared, but check in folder')
+        except Exception as e:
+            print(extract_tb(exc_info()[2])[0][1],e)
+
+    if str(inputt) == '-cl-pr':
+        try:
+            os.remove(str(os.getcwd() + '/' + 'personalres' + who + '.txt'))
+            print('privat cleared, but check in folder')
+        except Exception as e:
+            print(extract_tb(exc_info()[2])[0][1],e)
+
+    if str(inputt) == '-cl-ppr':
+        try:
+            os.remove(str(os.getcwd() + '/' + 'personalres' + who + '.txt'))
+            print('privat cleared, but check in folder')
+            os.remove(str(os.getcwd() + '/' + 'publicres' + who + '.txt'))
+            print('pub cleared, but check in folder')
+        except Exception as e:
+            print(extract_tb(exc_info()[2])[0][1],e)
+
+    if str(inputt) == '-cl-p':
+        try:
+            os.remove(str(os.getcwd() + '/' + 'publicres' + who + '.txt'))
+            print('pub cleared, but check in folder')
+        except Exception as e:
+            print(extract_tb(exc_info()[2])[0][1],e)
 
     if str(inputt) == '-mypublic':
         q = True
@@ -248,6 +322,5 @@ while q3 == True:
             INP_Fmessage = re.sub(r'\s', '', INP_Fmessage)
             F_encrypted_m = de(INP_Fmessage, privatkey)
             print(str('{color}'+F_encrypted_m+'{endcolor}').format(color='\033[32m', endcolor='\033[0m'))
-    except Exception as e:
-        print(extract_tb(exc_info()[2])[0][1],e)
-        continue
+    except OSError as e:
+        print("Ошибка: %s : %s" % (e, e.strerror))
