@@ -3,8 +3,8 @@
 block_cipher = None
 
 
-a = Analysis(['/Users/konstantin/PycharmProjects/CryptAnyL2/CryptAnyL_A.py'],
-             pathex=['/Users/konstantin/PycharmProjects/CryptAnyL2'],
+a = Analysis(['/Users/k/PycharmProjects/CryptAnyL/CryptAnyL_A.py'],
+             pathex=['/Users/k/PycharmProjects/CryptAnyL'],
              binaries=[],
              datas=[],
              hiddenimports=[],

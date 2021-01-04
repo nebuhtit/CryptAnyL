@@ -51,7 +51,7 @@ This pragram is based on open source libraries. The author is not responsible fo
                 createNewkeys('AA', pasw)
                 pubkeyFromFile = b64in(dec_F_import(pasw, 'publicresAA.txt'))
                 print('created')
-                print('Your public key:', pubkeyFromFile, '\nsent it to your friend')
+                print('Your public key:', pubkeyFromFile, '\nsent it to your friend', '\n Password:')
                 what_to_do = 'continue'
                 # return what_to_do
                 # continue
@@ -143,6 +143,8 @@ This pragram is based on open source libraries. The author is not responsible fo
             print('pub cleared, but check in folder')
             os.remove(str(os.getcwd() + '/' + 'friendsres' + who + '.txt'))
             print('friends cleared, but check in folder')
+            os.remove(str(os.getcwd() + '/' + 'sl.txt'))
+            print('sl removed')
         except Exception as e:
             print(extract_tb(exc_info()[2])[0][1],e)
         try:
@@ -164,6 +166,7 @@ This pragram is based on open source libraries. The author is not responsible fo
         try:
             os.remove(str(os.getcwd() + '/' + 'personalres' + who + '.txt'))
             os.remove(str(os.getcwd() + '/' + 'publicres' + who + '.txt'))
+            os.remove(str(os.getcwd() + '/' + 'sl.txt'))
             os.remove(str(os.getcwd() + '/' + 'friendsres' + who + '.txt'))
         except:
             print('_')

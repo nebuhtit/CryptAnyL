@@ -15,6 +15,12 @@ from textwrap import wrap
 from tkinter import Tk
 from tkinter.filedialog import askopenfilename
 
+def creating_Salt(length):
+    a = os.urandom(length)
+    #print(a)
+    with open('sl.txt', 'wb') as f:
+        f.write(a)
+
 def newKeys():
     # Creates new keys
     (pubkey, privkey) = rsa.newkeys(512)
@@ -112,7 +118,14 @@ def encrypting(i_password, text):
         pass
     iu_password = i_password.encode('utf-8')
     password = iu_password
-    salt = b'\xcfTQN\xd3\xb1\x1c\x96\x9eg\xe4\x82\xd2\xa3>!'
+    try:
+        with open('sl.txt', 'rb') as f:
+            salt = f.read()
+    except:
+        creating_Salt(16384)
+        with open('sl.txt', 'rb') as f:
+            salt = f.read()
+    #salt = b'\xcfTQN\xd3\xb1\x1c\x96\x9eg\xe4\x82\xd2\xa3>!'
     kdf = PBKDF2HMAC(
         algorithm=hashes.SHA256(),
         length=32,
@@ -142,7 +155,14 @@ def decrypting(i_password, enc_text):
     except:
         pass
     password = iu_password
-    salt = b'\xcfTQN\xd3\xb1\x1c\x96\x9eg\xe4\x82\xd2\xa3>!'
+    try:
+        with open('sl.txt', 'rb') as f:
+            salt = f.read()
+    except:
+        creating_Salt(16384)
+        with open('sl.txt', 'rb') as f:
+            salt = f.read()
+    # salt = b'\xcfTQN\xd3\xb1\x1c\x96\x9eg\xe4\x82\xd2\xa3>!'
     kdf = PBKDF2HMAC(
         algorithm=hashes.SHA256(),
         length=32,
@@ -242,7 +262,14 @@ def encF_byPass(path, pasw):
 
     iu_password = pasw.encode('utf-8')
     password = iu_password
-    salt = b'\xcfTQN\xd3\xb1\x1c\x96\x9eg\xe4\x82\xd2\xa3>!'
+    try:
+        with open('sl.txt', 'rb') as f:
+            salt = f.read()
+    except:
+        creating_Salt(16384)
+        with open('sl.txt', 'rb') as f:
+            salt = f.read()
+    # salt = b'\xcfTQN\xd3\xb1\x1c\x96\x9eg\xe4\x82\xd2\xa3>!'
     kdf = PBKDF2HMAC(
         algorithm=hashes.SHA256(),
         length=32,
@@ -275,7 +302,14 @@ def decF_byPass(path, pasw):
         ff = f.read()
 
     password = pasw.encode('utf8')
-    salt = b'\xcfTQN\xd3\xb1\x1c\x96\x9eg\xe4\x82\xd2\xa3>!'
+    try:
+        with open('sl.txt', 'rb') as f:
+            salt = f.read()
+    except:
+        creating_Salt(16384)
+        with open('sl.txt', 'rb') as f:
+            salt = f.read()
+    # salt = b'\xcfTQN\xd3\xb1\x1c\x96\x9eg\xe4\x82\xd2\xa3>!'
     kdf = PBKDF2HMAC(
         algorithm=hashes.SHA256(),
         length=32,
