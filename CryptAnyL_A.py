@@ -1,16 +1,22 @@
 # CryptAnyL project from nebuhtit
 #
 from CryptAnyL_modules import *
+
 who = 'AA'
+
 print(str('-h = list of commands; список команд'))
 
 def uslovia(inputt):
     inputt = str(inputt)
     # Comands for input
     global pasw, pubkeyFromFile
+    global driver
+    global pathToDr
+    global link
+    global xpathClick
+    global xpathSave
+
     what_to_do = ''
-
-
 
     if str(inputt) == '-h' or str(inputt) == '-help':
         print("""
@@ -28,20 +34,23 @@ def uslovia(inputt):
 -f + ' ' + choose path to file; выберите путь до файла  =  It encrypts file and puts it in For_sent. Send this file with stiring of key. Don't encrypted this key by Fiend's key, it's already encrypted, just send file and key. ; Шифрует файл и кладет его в For_sent. Отправьте этот файл и ключ. Не стоит шифровать ключ по ключам друга, они уже зашифрованы по ним. OR USE -p + ' ' + path to file; путь до файла.
 
 -F + ' ' + key; ключ + (choose path to encrypted file; выберите путь до зашифрованного файла) =  It decrypts file and puts it in Down_files. For decrypt file, use key. Don't decrypt key, it works automatically. Расшифрововает файл и кладет в Down_files. Используйте ключ. Не расшифровайте ключ, вставте так же, это произойдет автоматически. OR USE -P + ' ' + key; ключ + (path to encrypted file; путь до зашифрованного файла)
+* Don't delete sl.txt or save it with encrypted file! Не удаляй sl.txt или транспортируй его с зашифрованным файлом.
+
+-l = chatting by driver
 
 -z = encrypt the file by your password
 -Z = decrypt the file by your password
 -
 While chat ; Во время переписки:
     [enter] = Pass this part; Пропустить это действие
-        
+
 This pragram is based on open source libraries. The author is not responsible for data loss during use. By using the program, the user assumes full responsibility for all consequences. The author urges to use the program only with good intentions.;
 Это праграмма основана на библиотеках с отрытым исходным кодом. Автор не несет ответсвенность за потерю данных при использования. Пользуясь программой, пользователь принимает полную ответственность за все последствия на себя. Автор настоятельно призывает использовать прогрмму только с благими намериниями.
 """)
         what_to_do = 'continue'
 
     if str(inputt) == '-newkeys':
-        aaaaa =True
+        aaaaa = True
         while aaaaa == True:
             pasw = input('Create new password:')
             if str(pasw) == '-h' or str(pasw) == '-newkeys' or str(pasw) == '-q' or str(pasw) == '-mypublic':
@@ -51,7 +60,8 @@ This pragram is based on open source libraries. The author is not responsible fo
                 createNewkeys('AA', pasw)
                 pubkeyFromFile = b64in(dec_F_import(pasw, 'publicresAA.txt'))
                 print('created')
-                print('Your public key:', pubkeyFromFile, '\nsent it to your friend', '\n Password:')
+                print('Your public key:', pubkeyFromFile, '\nsent it to your friend')
+                # WRITE(pubkeyFromFile, xpathClick, xpathSave)
                 what_to_do = 'continue'
                 # return what_to_do
                 # continue
@@ -59,12 +69,54 @@ This pragram is based on open source libraries. The author is not responsible fo
     if str(inputt) == '-q':
         quit()
 
+    if str(inputt) == '-l':
+        what_to_do = 'continue'
+        try:
+            f = dec_F_import(pasw, 'for_driver.txt').split(' ')
+            print(f)
+
+            pathToDr = f[0]
+            link = f[1]
+            xpathClick = f[2]
+            xpathSave = f[3]
+            if xpathClick == '_' and xpathSave == '_':
+                xpathClick = '//*[@id="t-formula-bar-input"]/div'
+                xpathSave = '//*[@id="docs-file-menu"]'
+            driver = True
+        except Exception as e:
+            try:
+                print(extract_tb(exc_info()[2])[0][1], e)
+                optionsForDriver = input('Past options (pathToDr link xpathWriteOr"_"forOld xpathSaveOr"_"forOld):')
+                enc_F_save(pasw, optionsForDriver, 'for_driver.txt')
+                encrText = dec_F_import(pasw, 'for_driver.txt')
+                print('options saved')
+                print(encrText)
+                enc_F_save(pasw, optionsForDriver, 'for_driver.txt')
+
+                f = dec_F_import(pasw, 'for_driver.txt').split(' ')
+                pathToDr = f[0]
+                link = f[1]
+                xpathClick = f[2]
+                xpathSave = f[3]
+                driver = True
+            except Exception as e:
+                print(extract_tb(exc_info()[2])[0][1], e)
+
+        if driver == True:
+            try:
+                DRIVE(pathToDr, link)
+            except Exception as e:
+                print(extract_tb(exc_info()[2])[0][1], e)
+                print("Driver couldn't start, check options or version of driver")
+                driver = False
+
+
     try:
-        if re.match(r'-f',inputt).group(0) == '-f':
+        if re.match(r'-f', inputt).group(0) == '-f':
             Tk().withdraw()  # we don't want a full GUI, so keep the root window from appearing
             path = askopenfilename()  # show an "Open" dialog box and return the path to the selected file
-            #path = inputt.split('-f ')[1]
-            #print(path)
+            # path = inputt.split('-f ')[1]
+            # print(path)
             key_for_file = enfile(path)
             INP_Fkeys = dec_F_import(pasw, 'friendsresAA.txt')
             INP_Fkeys = b64out(INP_Fkeys)
@@ -77,7 +129,7 @@ This pragram is based on open source libraries. The author is not responsible fo
 
             what_to_do = 'break'
     except Exception as e:
-        #print(extract_tb(exc_info()[2])[0][1], e)
+        # print(extract_tb(exc_info()[2])[0][1], e)
         pass
 
     try:
@@ -85,7 +137,7 @@ This pragram is based on open source libraries. The author is not responsible fo
             key = inputt.split(' ')[1]
             Tk().withdraw()
             path = askopenfilename()
-            #path = inputt.split(' ')[2]
+            # path = inputt.split(' ')[2]
 
             privatkey = dec_F_import(pasw, 'personalresAA.txt')
             key = re.sub(r'\s', '', key)
@@ -97,10 +149,10 @@ This pragram is based on open source libraries. The author is not responsible fo
             # print(new_path)
             what_to_do = 'break'
     except Exception as e:
-        #print(extract_tb(exc_info()[2])[0][1], e)
+        # print(extract_tb(exc_info()[2])[0][1], e)
         pass
     try:
-        if re.match(r'-p',inputt).group(0) == '-p':
+        if re.match(r'-p', inputt).group(0) == '-p':
             path = inputt.split(' ')[1]
             print(path)
             key_for_file = enfile(path)
@@ -115,7 +167,7 @@ This pragram is based on open source libraries. The author is not responsible fo
 
             what_to_do = 'break'
     except Exception as e:
-        #print(extract_tb(exc_info()[2])[0][1], e)
+        # print(extract_tb(exc_info()[2])[0][1], e)
         pass
 
     try:
@@ -132,12 +184,12 @@ This pragram is based on open source libraries. The author is not responsible fo
             # print(new_path)
             what_to_do = 'break'
     except Exception as e:
-        #print(extract_tb(exc_info()[2])[0][1], e)
+        # print(extract_tb(exc_info()[2])[0][1], e)
         pass
     if str(inputt) == '-clearall':
         # Clear keys of privat public fiend also Down_files For_sent
         try:
-            os.remove(str(os.getcwd()+'/'+'personalres'+who+'.txt'))
+            os.remove(str(os.getcwd() + '/' + 'personalres' + who + '.txt'))
             print('privat cleared, but check in folder')
             os.remove(str(os.getcwd() + '/' + 'publicres' + who + '.txt'))
             print('pub cleared, but check in folder')
@@ -146,19 +198,19 @@ This pragram is based on open source libraries. The author is not responsible fo
             os.remove(str(os.getcwd() + '/' + 'sl.txt'))
             print('sl removed')
         except Exception as e:
-            print(extract_tb(exc_info()[2])[0][1],e)
+            print(extract_tb(exc_info()[2])[0][1], e)
         try:
-            shutil.rmtree(str(os.getcwd()+'/'+'Down_files'))
+            shutil.rmtree(str(os.getcwd() + '/' + 'Down_files'))
         except OSError as e:
             print("%s : %s" % ('Down_files', e.strerror))
             pass
         try:
-            shutil.rmtree(str(os.getcwd()+'/'+'For_sent'))
+            shutil.rmtree(str(os.getcwd() + '/' + 'For_sent'))
         except OSError as e:
             print("%s : %s" % ('For_sent', e.strerror))
             pass
         try:
-            shutil.rmtree(str(os.getcwd()+'/'+'colection'))
+            shutil.rmtree(str(os.getcwd() + '/' + 'colection'))
         except OSError as e:
             pass
         what_to_do = 'continue'
@@ -175,15 +227,15 @@ This pragram is based on open source libraries. The author is not responsible fo
         what_to_do = 'continue'
 
         try:
-            shutil.rmtree(str(os.getcwd()+'/'+'For_sent'))
+            shutil.rmtree(str(os.getcwd() + '/' + 'For_sent'))
         except OSError as e:
             pass
         try:
-            shutil.rmtree(str(os.getcwd()+'/'+'For_sent'))
+            shutil.rmtree(str(os.getcwd() + '/' + 'For_sent'))
         except OSError as e:
             pass
         try:
-            shutil.rmtree(str(os.getcwd()+'/'+'colection'))
+            shutil.rmtree(str(os.getcwd() + '/' + 'colection'))
         except OSError as e:
             pass
         what_to_do = 'continue'
@@ -194,16 +246,16 @@ This pragram is based on open source libraries. The author is not responsible fo
             os.remove(str(os.getcwd() + '/' + 'friendsres' + who + '.txt'))
             print('friends cleared, but check in folder')
         except Exception as e:
-            print(extract_tb(exc_info()[2])[0][1],e)
+            print(extract_tb(exc_info()[2])[0][1], e)
         what_to_do = 'continue'
 
     if str(inputt) == '-cl-pr':
-        #clear privat key
+        # clear privat key
         try:
             os.remove(str(os.getcwd() + '/' + 'personalres' + who + '.txt'))
             print('privat cleared, but check in folder')
         except Exception as e:
-            print(extract_tb(exc_info()[2])[0][1],e)
+            print(extract_tb(exc_info()[2])[0][1], e)
         what_to_do = 'continue'
 
     if str(inputt) == '-cl-ppr':
@@ -214,7 +266,7 @@ This pragram is based on open source libraries. The author is not responsible fo
             os.remove(str(os.getcwd() + '/' + 'publicres' + who + '.txt'))
             print('pub cleared, but check in folder')
         except Exception as e:
-            print(extract_tb(exc_info()[2])[0][1],e)
+            print(extract_tb(exc_info()[2])[0][1], e)
         what_to_do = 'continue'
 
     if str(inputt) == '-cl-p':
@@ -223,7 +275,7 @@ This pragram is based on open source libraries. The author is not responsible fo
             os.remove(str(os.getcwd() + '/' + 'publicres' + who + '.txt'))
             print('pub cleared, but check in folder')
         except Exception as e:
-            print(extract_tb(exc_info()[2])[0][1],e)
+            print(extract_tb(exc_info()[2])[0][1], e)
         what_to_do = 'continue'
 
     if str(inputt) == '-mypublic':
@@ -285,15 +337,17 @@ This pragram is based on open source libraries. The author is not responsible fo
             pass
         what_to_do = 'continue'
     return what_to_do
-        # continue
+    # continue
+
+
 q = True
-#First check for existing privat key in file _
+# First check for existing privat key in file _
 try:
-    open('personalresAA.txt','r')
+    open('personalresAA.txt', 'r')
 except FileNotFoundError as e:
-        #pasw, what_to_do = ifif('-newkeys', who)
-        uslovia('-newkeys')
-        q = False
+    # pasw, what_to_do = ifif('-newkeys', who)
+    uslovia('-newkeys')
+    q = False
 
 except Exception as e:
     print(extract_tb(exc_info()[2])[0][1], e)
@@ -318,20 +372,59 @@ while q0 == True:
         print('password is not correct or file with mistake, try again.')
         continue
 
+try:
+    with open('for_drive.txt', 'r') as f:
+        for_drive = f.read()
+    uslovia('-l')
+except:
+    pass
+
 pubkeyFromFile = b64in(dec_F_import(pasw, 'publicresAA.txt'))
 q2 = True
 
-#print('Your public key:\n', pubkeyFromFile, '\nsent it to your friend')
+print(driver)
+# print('Your public key:\n', pubkeyFromFile, '\nsent it to your friend')
 
 while q2 == True:
     try:
         INP_Fkeys = dec_F_import(pasw, 'friendsresAA.txt')
         q2 = False
     except Exception as e:
-        #print(extract_tb(exc_info()[2])[0][1], e)
-
-        INP_Fkeys = re.sub(r'\s', '', input("Past here friend's public key\n:"))
-
+        # print(extract_tb(exc_info()[2])[0][1], e)
+        if driver == True:
+            # Connecting. Swap keys.
+            INP_Fkeys = READ(xpathClick, xpathSave)
+            if ',kkk' in INP_Fkeys:
+                if INP_Fkeys.split(',')[0] != pubkeyFromFile:
+                    INP_Fkeys = INP_Fkeys.split(',')[0]
+                    WRITE(str(pubkeyFromFile + ',kkk'), xpathClick,
+                          xpathSave)
+                if INP_Fkeys.split(',')[0] == pubkeyFromFile:
+                    print('waiting other key')
+                    CHeck = READ(xpathClick, xpathSave)
+                    while CHeck == pubkeyFromFile:
+                        print('waiting other key')
+                        CHeck = READ(xpathClick, xpathSave)
+                    else:
+                        NP_Fkeys = INP_Fkeys.split(',')[0]
+            elif ',kkk' not in INP_Fkeys:
+                print('waiting other key')
+                WRITE(str(pubkeyFromFile + ',kkk'), xpathClick, xpathSave)
+                time.sleep(3)
+                CHeck = READ(xpathClick, xpathSave)
+                while ',kkk' not in CHeck:
+                    print('waiting other key')
+                    time.sleep(3)
+                    CHeck = READ(xpathClick, xpathSave)
+                if ',kkk' in CHeck:
+                    while CHeck.split(',')[0] == pubkeyFromFile:
+                        print('waiting other key')
+                        time.sleep(3)
+                        CHeck = READ(xpathClick, xpathSave)
+                    if CHeck.split(',')[0] != pubkeyFromFile:
+                        INP_Fkeys = CHeck.split(',')[0]
+        else:
+            INP_Fkeys = re.sub(r'\s', '', input("Past here friend's public key\n:"))
 
         usl = uslovia(INP_Fkeys)
         if usl == 'continue':
@@ -346,13 +439,13 @@ while q2 == True:
 q3 = True
 while q3 == True:
     try:
-        INP_sent = input(str('Write here your message:'))
+        INP_sent = input(str('Write your message:'))
 
         usl = uslovia(INP_sent)
         if usl == 'continue':
             enc_F_save(pasw, INP_Fkeys, 'friendsresAA.txt')
             privatkey = dec_F_import(pasw, 'personalresAA.txt')
-            #print('Your public key:', pubkeyFromFile, '\nsent it to your friend')
+            # print('Your public key:', pubkeyFromFile, '\nsent it to your friend')
             continue
         elif usl == 'break':
             continue
@@ -360,21 +453,33 @@ while q3 == True:
             pass
         else:
             INP_Fkeys = b64out(INP_Fkeys)
-            #print("INP_Fkeys:", INP_Fkeys)
+            # print("INP_Fkeys:", INP_Fkeys)
             myEncryptM = en(INP_sent, INP_Fkeys)
             INP_Fkeys = b64in(INP_Fkeys)
 
             print(str('Sent this text to your friend:'), myEncryptM)
+            if driver == True:
+                WRITE(myEncryptM, xpathClick, xpathSave)
+            else:
+                INP_Fmessage = input('past here friends encrypted message\n:')
 
-        #INP_Fmessage = input('past here friends encrypted message\n:')
-        INP_Fmessage = input('Past here friends encrypted message\n:')
+        if driver == True:
+            INP_Fmessage = READ(xpathClick, xpathSave)
+            while INP_Fmessage == myEncryptM:
+                time.sleep(2)
+                INP_Fmessage = READ(xpathClick, xpathSave)
+            else:
+                INP_Fmessage = READ(xpathClick, xpathSave)
+        else:
+            c = input('Past here friends encrypted message\n:')
+
         if INP_Fmessage == '':
             continue
         usl = uslovia(INP_Fmessage)
         if usl == 'continue':
             enc_F_save(pasw, INP_Fkeys, 'friendsresAA.txt')
             privatkey = dec_F_import(pasw, 'personalresAA.txt')
-            #print('Your public key:', pubkeyFromFile, '\nsent it to your friend')
+            # print('Your public key:', pubkeyFromFile, '\nsent it to your friend')
             continue
         elif usl == 'break':
             continue
