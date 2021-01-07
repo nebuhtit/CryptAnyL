@@ -37,53 +37,60 @@ print(a, b)
 
 
 
-def WRITE(text):
+def WRITE(text, link, xpathInput, xpathClickSave):
+    global dr
     # Write text in common sheet
     chrome_opt = webdriver.ChromeOptions()
     chrome_opt.add_argument('--disable-gpu')
-    PATH = '/Users//Downloads/chromedriver'  # PATH TO YOUR CHROME WEB DRIVER
+    PATH = '/Users/k/Downloads/chromedriver'  # PATH TO YOUR CHROME WEB DRIVER
     dr = webdriver.Chrome(executable_path=PATH, chrome_options=chrome_opt)
-    link = ("https://WRITE_HERE_LINK_FOR_YOUR_G_SHEET")
+    link = link
     #dr.set_window_size(767, 1235)
     #dr.set_window_position(1300,0)
     dr.get(link)
     time.sleep(0)
-    el = dr.find_element_by_xpath('//*[@id="t-formula-bar-input"]/div')
+    el = dr.find_element_by_xpath(xpathInput)
     #print(el.get_attribute('outerHTML'))
     el.click()
     el.clear()
     el.send_keys(text)
-    print(el.text)
-    save_changes = dr.find_element_by_xpath('//*[@id="docs-file-menu"]')
+    #print(el.text)
+    save_changes = dr.find_element_by_xpath(xpathClickSave)
     time.sleep(2)
     save_changes.click()
-    time.sleep(2)
-    dr.close()
-WRITE('hello')
+    time.sleep(0)
+    #dr.close()
+    return el.text
+w = WRITE('pup', "https://docs.google.com/spreadsheets/d/1GpqknTV11PGo3x3PXdS49UtLCET0dj6AgpB1pwPUIVQ/edit?usp=sharing", '//*[@id="t-formula-bar-input"]/div', '//*[@id="docs-file-menu"]')
+print(w)
 
-def READ():
+def READ(link, xpathInput, xpathClickSave):
     # Read text from common sheet
     chrome_opt = webdriver.ChromeOptions()
     chrome_opt.add_argument('--disable-gpu')
-    PATH = '/Users//Downloads/chromedriver' # PATH TO YOUR CHROME WEB DRIVER
-    dr = webdriver.Chrome(executable_path=PATH,chrome_options=chrome_opt)
-    link = ("https://WRITE_HERE_LINK_FOR_YOUR_G_SHEET")
+    PATH = '/Users/k/Downloads/chromedriver' # PATH TO YOUR CHROME WEB DRIVER
+    #dr = webdriver.Chrome(executable_path=PATH,chrome_options=chrome_opt)
+    link = (link)
     #dr.set_window_size(767, 1235)
     #dr.set_window_position(1300,0)
-    dr.get(link)
+    try:
+        dr.get(link)
+    except:
+        dr = webdriver.Chrome(executable_path=PATH, chrome_options=chrome_opt)
+        dr.get(link)
     time.sleep(0)
-    el = dr.find_element_by_xpath('//*[@id="t-formula-bar-input"]/div')
+    el = dr.find_element_by_xpath(xpathInput)
     #print(el.get_attribute('outerHTML'))
     el.click()
     #el.clear()
     #el.send_keys(text)
     readed_text = el.text
-    print(el.text)
-    save_changes = dr.find_element_by_xpath('//*[@id="docs-file-menu"]')
+    #print(el.text)
+    save_changes = dr.find_element_by_xpath(xpathClickSave)
     time.sleep(2)
     save_changes.click()
-    time.sleep(2)
-    dr.close()
+    time.sleep(0)
+    #dr.close()
     return readed_text
-t = READ()
+t = READ("https://docs.google.com/spreadsheets/d/1GpqknTV11PGo3x3PXdS49UtLCET0dj6AgpB1pwPUIVQ/edit?usp=sharing", '//*[@id="t-formula-bar-input"]/div', '//*[@id="docs-file-menu"]')
 print(t)

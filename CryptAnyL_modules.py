@@ -395,7 +395,7 @@ def WRITE(text, xpathInput, xpathClickSave):
     save_changes = dr.find_element_by_xpath(xpathClickSave)
     time.sleep(2)
     save_changes.click()
-    time.sleep(0)
+    time.sleep(2)
     #dr.close()
     return el.text
 #w = WRITE('pup', "https://docs.google.com/spreadsheets/d/1GpqknTV11PGo3x3PXdS49UtLCET0dj6AgpB1pwPUIVQ/edit?usp=sharing", '//*[@id="t-formula-bar-input"]/div', '//*[@id="docs-file-menu"]')

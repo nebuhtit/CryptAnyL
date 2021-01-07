@@ -3,7 +3,7 @@
 from CryptAnyL_modules import *
 
 who = 'AA'
-
+driver = False
 print(str('-h = list of commands; список команд'))
 
 def uslovia(inputt):
@@ -36,7 +36,7 @@ def uslovia(inputt):
 -F + ' ' + key; ключ + (choose path to encrypted file; выберите путь до зашифрованного файла) =  It decrypts file and puts it in Down_files. For decrypt file, use key. Don't decrypt key, it works automatically. Расшифрововает файл и кладет в Down_files. Используйте ключ. Не расшифровайте ключ, вставте так же, это произойдет автоматически. OR USE -P + ' ' + key; ключ + (path to encrypted file; путь до зашифрованного файла)
 * Don't delete sl.txt or save it with encrypted file! Не удаляй sl.txt или транспортируй его с зашифрованным файлом.
 
--l = chatting by driver
+-l = chatting by for_driver.txt
 
 -z = encrypt the file by your password
 -Z = decrypt the file by your password
@@ -373,7 +373,7 @@ while q0 == True:
         continue
 
 try:
-    with open('for_drive.txt', 'r') as f:
+    with open('for_driver.txt', 'r') as f:
         for_drive = f.read()
     uslovia('-l')
 except:
@@ -382,7 +382,7 @@ except:
 pubkeyFromFile = b64in(dec_F_import(pasw, 'publicresAA.txt'))
 q2 = True
 
-print(driver)
+
 # print('Your public key:\n', pubkeyFromFile, '\nsent it to your friend')
 
 while q2 == True:
