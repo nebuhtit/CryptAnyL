@@ -471,7 +471,7 @@ while q3 == True:
             else:
                 INP_Fmessage = READ(xpathClick, xpathSave)
         else:
-            c = input('Past here friends encrypted message\n:')
+            pass
 
         if INP_Fmessage == '':
             continue
