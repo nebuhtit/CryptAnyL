@@ -33,11 +33,103 @@ from selenium import webdriver
 # opts = Options()
 # opts.add_argument("user-agent=")
 
+def encryptingSalt(i_password, text):
+    # Encrypting str by password
+    try:
+        text = text.encode('utf8')
+    except:
+        pass
+    iu_password = i_password.encode('utf-8')
+    password = iu_password
+
+    salt = b">\xf7XM#\x81\xff\x9d\xec\xe8\xac\xd9\x86p\xac\x8b\x99-^R\x10\xd2\x82\xb0\x17U$\x9ac\\\xbf\xe19\x17\ty\x9a\x03\xb5I?\xd8j\x7f\xd8\x024.uH\xa6\xd2\xfb+\x15\x7f\xf6\xfb\x1e\x95m\x19\x8b\xb5\xe2}\xe6\xcc\x89\xb4\x03\xa9_$d(ZB\r\\\xfd$\xfd\xb4\xec\xadV\xb2'\xfb\x87\xdf\xf0\xa9`R*8\xbc\x8e\x8eS\xa8\xfc\xe7\x9c\x11\xe5\xa1\xef\xb9\xb1A5\n}&@\xc5\xd1w\xb7\xbaf\xca\xde|."
+    kdf = PBKDF2HMAC(
+        algorithm=hashes.SHA256(),
+        length=32,
+        salt=salt,
+        iterations=100000,
+        backend=default_backend()
+    )
+    key = base64.urlsafe_b64encode(kdf.derive(password))
+    # print("key: ", key)
+    f = Fernet(key)
+    # print("f: ", f)
+    # text = input('Please, write text: ').encode('utf-8')
+    token = f.encrypt(text)
+    #print("token: ", token)
+    t_k = base64.b64encode(token)
+    t_k1 = t_k.decode('utf-8')
+    t_k2 = str(t_k1)
+    # print("text_k2: ", t_k2)
+    return salt, token
+# s, t = encryptingSalt('123','kek')
+#print("encryptingSalt",t)
+# salt, t_k2 = encrypting('123','hello')
+
+def decryptingSalt(i_password, enc_text):
+    # Decripting previos encrypted text by the same password
+    try:
+        iu_password = i_password.encode('utf-8')
+    except:
+        pass
+    password = iu_password
+    salt = b">\xf7XM#\x81\xff\x9d\xec\xe8\xac\xd9\x86p\xac\x8b\x99-^R\x10\xd2\x82\xb0\x17U$\x9ac\\\xbf\xe19\x17\ty\x9a\x03\xb5I?\xd8j\x7f\xd8\x024.uH\xa6\xd2\xfb+\x15\x7f\xf6\xfb\x1e\x95m\x19\x8b\xb5\xe2}\xe6\xcc\x89\xb4\x03\xa9_$d(ZB\r\\\xfd$\xfd\xb4\xec\xadV\xb2'\xfb\x87\xdf\xf0\xa9`R*8\xbc\x8e\x8eS\xa8\xfc\xe7\x9c\x11\xe5\xa1\xef\xb9\xb1A5\n}&@\xc5\xd1w\xb7\xbaf\xca\xde|."
+    kdf = PBKDF2HMAC(
+        algorithm=hashes.SHA256(),
+        length=32,
+        salt=salt,
+        iterations=100000,
+        backend=default_backend()
+    )
+
+    key = base64.urlsafe_b64encode(kdf.derive(password))
+    f = Fernet(key)
+    o_enc_t = enc_text
+
+    #encod_enc_t = o_enc_t.encode('utf-8')
+
+    #b_encod_enc_t = base64.b64decode(encod_enc_t)
+    # print("b_encod_enc_t: ", b_encod_enc_t)
+
+    decryptedtext = f.decrypt(o_enc_t)
+    #print("decryptedtext: ", decryptedtext)
+    try:
+        decryptedtext = decryptedtext.decode('utf8')
+    except:
+        pass
+    return decryptedtext
+# res = decryptingSalt('123', t)
+# print("decryptingSalt",res)
+
+
+
+
+
 def creating_Salt(length):
     a = os.urandom(length)
     #print(a)
     with open('sl.txt', 'wb') as f:
         f.write(a)
+    #encSalt_byPass('sl.txt', pasw)
+
+def creating_Salt2():
+    a = os.urandom(16384)
+    #print(a)
+    s, t = encryptingSalt('123', a)
+    #print(t)
+    with open('sl.txt', 'wb') as f:
+        f.write(t)
+# creating_Salt2()
+
+def reading_Salt():
+    with open('sl.txt', 'rb') as f:
+        f = f.read()
+    t = decryptingSalt('123', f)
+    #print(type(t))
+    return t
+# print(reading_Salt())
+
+
 
 def newKeys():
     # Creates new keys
@@ -137,12 +229,10 @@ def encrypting(i_password, text):
     iu_password = i_password.encode('utf-8')
     password = iu_password
     try:
-        with open('sl.txt', 'rb') as f:
-            salt = f.read()
+        salt = reading_Salt()
     except:
-        creating_Salt(16384)
-        with open('sl.txt', 'rb') as f:
-            salt = f.read()
+        creating_Salt2()
+        salt = reading_Salt()
     #salt = b'\xcfTQN\xd3\xb1\x1c\x96\x9eg\xe4\x82\xd2\xa3>!'
     kdf = PBKDF2HMAC(
         algorithm=hashes.SHA256(),
@@ -174,12 +264,10 @@ def decrypting(i_password, enc_text):
         pass
     password = iu_password
     try:
-        with open('sl.txt', 'rb') as f:
-            salt = f.read()
+        salt = reading_Salt()
     except:
-        creating_Salt(16384)
-        with open('sl.txt', 'rb') as f:
-            salt = f.read()
+        creating_Salt2()
+        salt = reading_Salt()
     # salt = b'\xcfTQN\xd3\xb1\x1c\x96\x9eg\xe4\x82\xd2\xa3>!'
     kdf = PBKDF2HMAC(
         algorithm=hashes.SHA256(),
@@ -281,12 +369,10 @@ def encF_byPass(path, pasw):
     iu_password = pasw.encode('utf-8')
     password = iu_password
     try:
-        with open('sl.txt', 'rb') as f:
-            salt = f.read()
+        salt = reading_Salt()
     except:
-        creating_Salt(16384)
-        with open('sl.txt', 'rb') as f:
-            salt = f.read()
+        creating_Salt2()
+        salt = reading_Salt()
     # salt = b'\xcfTQN\xd3\xb1\x1c\x96\x9eg\xe4\x82\xd2\xa3>!'
     kdf = PBKDF2HMAC(
         algorithm=hashes.SHA256(),
@@ -321,12 +407,10 @@ def decF_byPass(path, pasw):
 
     password = pasw.encode('utf8')
     try:
-        with open('sl.txt', 'rb') as f:
-            salt = f.read()
+        salt = reading_Salt()
     except:
-        creating_Salt(16384)
-        with open('sl.txt', 'rb') as f:
-            salt = f.read()
+        creating_Salt2()
+        salt = reading_Salt()
     # salt = b'\xcfTQN\xd3\xb1\x1c\x96\x9eg\xe4\x82\xd2\xa3>!'
     kdf = PBKDF2HMAC(
         algorithm=hashes.SHA256(),
