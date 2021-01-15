@@ -368,11 +368,12 @@ def encF_byPass(path, pasw):
 
     iu_password = pasw.encode('utf-8')
     password = iu_password
-    try:
-        salt = reading_Salt()
-    except:
-        creating_Salt2()
-        salt = reading_Salt()
+    salt = str(str(pasw)+str(pasw)+"xwlHhnVNms+seAKNYiREQUdfPKsSlAxHMQYAFcI3HGol9th5s30MByteSSMXbfSAK3s2GuTD+gepwuA+FHUcAfigzmmXmt8AdI12hyMO9Qm57TOKSyZHRO1VDIBoCq9wcq2h9LQyCrghkyqfD+b7lBa+06Wa/xtL8LkF+KL6DhWsY9Z7TsoF4j1ShWsII/NIw9WQ4rACJ9M2oH3LoWKtXXt5kxOM0WY/5N7S6TM1NqwzadKzFtvBrI+/7C0qm0UnOpmqPw2gnGkzY048YBhhIFn3moWf0KlhD9uNNNM4Ypbt6jowkbgFw/7u6N2JXkt4eLi9bj2yVAJKmjzvwaTGV8oMWTwiADa7C8SpShz3dy+q5cb5CTZ6XGczExiICRuOaCXWw23sL8x9czzzWFVRSS1CYzqFmCDlcoUglR2ac8jAWRM8sCul0Vpe2GKFPa+uGc2AznthNg5R5eu2F29kgLrvwO59RRZolrg+n1uL0nXEsVGpM52p7TFmT36Vbatl6KvrmOe3LpxaccztH64TX6+LfHUwfNGYWEZ8Jv3wqxVVy+QXd8Q8wPqIR0SWMSi9VWXBH2K65S0rx0lVefrULgw1q/W9wtvxlSLIi5M8yZPRLTsZ8sl74pegvuKYriYDtEZ7cWCAy0V7rFmubqXfL1v5SawVfSlcPpL4Ab2nFk0NT55G5u0mHeUPyAp0DnIJE8DweqHN9aMplBfr84Nc4YCfM5XCQwWSljK9mFmEUZO/cSsR/Jq77/0s6u6+/QUa/E+jVfEOZEBvpQP0j7EofecIWugEbRyise5RZPgMeHrdJUac").encode('utf8')
+    # try:
+    #     salt = reading_Salt()
+    # except:
+    #     creating_Salt2()
+    #     salt = reading_Salt()
     # salt = b'\xcfTQN\xd3\xb1\x1c\x96\x9eg\xe4\x82\xd2\xa3>!'
     kdf = PBKDF2HMAC(
         algorithm=hashes.SHA256(),
@@ -406,11 +407,12 @@ def decF_byPass(path, pasw):
         ff = f.read()
 
     password = pasw.encode('utf8')
-    try:
-        salt = reading_Salt()
-    except:
-        creating_Salt2()
-        salt = reading_Salt()
+    salt = str(str(pasw) + str(pasw)+"xwlHhnVNms+seAKNYiREQUdfPKsSlAxHMQYAFcI3HGol9th5s30MByteSSMXbfSAK3s2GuTD+gepwuA+FHUcAfigzmmXmt8AdI12hyMO9Qm57TOKSyZHRO1VDIBoCq9wcq2h9LQyCrghkyqfD+b7lBa+06Wa/xtL8LkF+KL6DhWsY9Z7TsoF4j1ShWsII/NIw9WQ4rACJ9M2oH3LoWKtXXt5kxOM0WY/5N7S6TM1NqwzadKzFtvBrI+/7C0qm0UnOpmqPw2gnGkzY048YBhhIFn3moWf0KlhD9uNNNM4Ypbt6jowkbgFw/7u6N2JXkt4eLi9bj2yVAJKmjzvwaTGV8oMWTwiADa7C8SpShz3dy+q5cb5CTZ6XGczExiICRuOaCXWw23sL8x9czzzWFVRSS1CYzqFmCDlcoUglR2ac8jAWRM8sCul0Vpe2GKFPa+uGc2AznthNg5R5eu2F29kgLrvwO59RRZolrg+n1uL0nXEsVGpM52p7TFmT36Vbatl6KvrmOe3LpxaccztH64TX6+LfHUwfNGYWEZ8Jv3wqxVVy+QXd8Q8wPqIR0SWMSi9VWXBH2K65S0rx0lVefrULgw1q/W9wtvxlSLIi5M8yZPRLTsZ8sl74pegvuKYriYDtEZ7cWCAy0V7rFmubqXfL1v5SawVfSlcPpL4Ab2nFk0NT55G5u0mHeUPyAp0DnIJE8DweqHN9aMplBfr84Nc4YCfM5XCQwWSljK9mFmEUZO/cSsR/Jq77/0s6u6+/QUa/E+jVfEOZEBvpQP0j7EofecIWugEbRyise5RZPgMeHrdJUac").encode('utf8')
+    # try:
+    #     salt = reading_Salt()
+    # except:
+    #     creating_Salt2()
+    #     salt = reading_Salt()
     # salt = b'\xcfTQN\xd3\xb1\x1c\x96\x9eg\xe4\x82\xd2\xa3>!'
     kdf = PBKDF2HMAC(
         algorithm=hashes.SHA256(),
