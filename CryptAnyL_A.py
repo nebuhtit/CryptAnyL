@@ -391,7 +391,7 @@ The author urges to use the program only with good intentions.;
         except:
             pass
     if str(inputt) == '-d':
-        with open(os.getcwd()+'/CryptALL/for_driver.txt') as f:
+        with open(os.getcwd() + "/CryptALL/" + 'for_driver.txt', 'rb') as f:
             f.read()
     return what_to_do
     # continue
