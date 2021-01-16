@@ -4,7 +4,16 @@ from CryptAnyL_modules import *
 
 who = 'AA'
 driver = False
+puthToServer = ''
+xpathInput = ''
+xpathClick = ''
+xpathSave = ''
 print(str('-h = list of commands; список команд'))
+try:
+    os.mkdir(os.getcwd()+"/CryptALL")
+except FileExistsError:
+    pass
+
 
 def uslovia(inputt):
     inputt = str(inputt)
@@ -15,6 +24,7 @@ def uslovia(inputt):
     global link
     global xpathClick
     global xpathSave
+    global puthToServer
 
     what_to_do = ''
 
@@ -73,20 +83,25 @@ This pragram is based on open source libraries. The author is not responsible fo
         what_to_do = 'continue'
         try:
             f = dec_F_import(pasw, 'for_driver.txt').split(' ')
-            print(f)
+            if f[0] == '_':
+                puthToServer = f[1]
+                with open(puthToServer, 'r') as f:
+                    f.read()
+            else:
+                print(f)
 
-            pathToDr = f[0]
-            link = f[1]
-            xpathClick = f[2]
-            xpathSave = f[3]
-            if xpathClick == '_' and xpathSave == '_':
-                xpathClick = '//*[@id="t-formula-bar-input"]/div'
-                xpathSave = '//*[@id="docs-file-menu"]'
-            driver = True
+                pathToDr = f[0]
+                link = f[1]
+                xpathClick = f[2]
+                xpathSave = f[3]
+                if xpathClick == '_' and xpathSave == '_':
+                    xpathClick = '//*[@id="t-formula-bar-input"]/div'
+                    xpathSave = '//*[@id="docs-file-menu"]'
+                driver = True
         except Exception as e:
             try:
-                print(extract_tb(exc_info()[2])[0][1], e)
-                optionsForDriver = input('Past options (pathToDr link xpathWriteOr"_"forOld xpathSaveOr"_"forOld):')
+                #print(extract_tb(exc_info()[2])[0][1], e)
+                optionsForDriver = input('Past options (pathToDr link xpathWriteOr"_"forOld xpathSaveOr"_"forOld) or _ puth to server.txt:')
                 enc_F_save(pasw, optionsForDriver, 'for_driver.txt')
                 encrText = dec_F_import(pasw, 'for_driver.txt')
                 print('options saved')
@@ -94,22 +109,38 @@ This pragram is based on open source libraries. The author is not responsible fo
                 enc_F_save(pasw, optionsForDriver, 'for_driver.txt')
 
                 f = dec_F_import(pasw, 'for_driver.txt').split(' ')
-                pathToDr = f[0]
-                link = f[1]
-                xpathClick = f[2]
-                xpathSave = f[3]
-                driver = True
+                if f[0] == '_':
+                    puthToServer = f[1]
+                    with open(puthToServer, 'r') as f:
+                        f.read()
+                else:
+                    print(f)
+
+                    pathToDr = f[0]
+                    link = f[1]
+                    xpathClick = f[2]
+                    xpathSave = f[3]
+                    if xpathClick == '_' and xpathSave == '_':
+                        xpathClick = '//*[@id="t-formula-bar-input"]/div'
+                        xpathSave = '//*[@id="docs-file-menu"]'
+                    driver = True
             except Exception as e:
-                print(extract_tb(exc_info()[2])[0][1], e)
+                #print(extract_tb(exc_info()[2])[0][1], e)
+                traceback.print_exception(*exc_info)
+                del exc_info
 
         if driver == True:
             try:
                 DRIVE(pathToDr, link)
             except Exception as e:
-                print(extract_tb(exc_info()[2])[0][1], e)
+                #print(extract_tb(exc_info()[2])[0][1], e)
+                traceback.print_exception(*exc_info)
+                del exc_info
                 print("Driver couldn't start, check options or version of driver")
                 driver = False
-
+        else:
+            DRIVE('', '', puthToServer)
+            driver = True
 
     if '-f' in inputt:
             Tk().withdraw()  # we don't want a full GUI, so keep the root window from appearing
@@ -341,7 +372,7 @@ This pragram is based on open source libraries. The author is not responsible fo
 q = True
 # First check for existing privat key in file _
 try:
-    open('personalresAA.txt', 'r')
+    open('CryptALL/personalresAA.txt', 'r')
 except FileNotFoundError as e:
     # pasw, what_to_do = ifif('-newkeys', who)
     uslovia('-newkeys')
@@ -371,7 +402,7 @@ while q0 == True:
         continue
 
 try:
-    with open('for_driver.txt', 'r') as f:
+    with open('CryptALL/for_driver.txt', 'r') as f:
         for_drive = f.read()
     uslovia('-l')
 except:
@@ -391,34 +422,34 @@ while q2 == True:
         # print(extract_tb(exc_info()[2])[0][1], e)
         if driver == True:
             # Connecting. Swap keys.
-            INP_Fkeys = READ(xpathClick, xpathSave)
+            INP_Fkeys = READ(xpathClick, xpathSave, puthToServer)
             if ',kkk' in INP_Fkeys:
                 if INP_Fkeys.split(',')[0] != pubkeyFromFile:
                     INP_Fkeys = INP_Fkeys.split(',')[0]
                     WRITE(str(pubkeyFromFile + ',kkk'), xpathClick,
-                          xpathSave)
+                          xpathSave, puthToServer)
                 if INP_Fkeys.split(',')[0] == pubkeyFromFile:
                     print('waiting other key')
-                    CHeck = READ(xpathClick, xpathSave)
+                    CHeck = READ(xpathClick, xpathSave, puthToServer)
                     while CHeck == pubkeyFromFile:
                         print('waiting other key')
-                        CHeck = READ(xpathClick, xpathSave)
+                        CHeck = READ(xpathClick, xpathSave, puthToServer)
                     else:
                         NP_Fkeys = INP_Fkeys.split(',')[0]
             elif ',kkk' not in INP_Fkeys:
                 print('waiting other key')
-                WRITE(str(pubkeyFromFile + ',kkk'), xpathClick, xpathSave)
+                WRITE(str(pubkeyFromFile + ',kkk'), xpathClick, xpathSave, puthToServer)
                 time.sleep(3)
-                CHeck = READ(xpathClick, xpathSave)
+                CHeck = READ(xpathClick, xpathSave, puthToServer)
                 while ',kkk' not in CHeck:
                     print('waiting other key')
                     time.sleep(3)
-                    CHeck = READ(xpathClick, xpathSave)
+                    CHeck = READ(xpathClick, xpathSave, puthToServer)
                 if ',kkk' in CHeck:
                     while CHeck.split(',')[0] == pubkeyFromFile:
                         print('waiting other key')
                         time.sleep(3)
-                        CHeck = READ(xpathClick, xpathSave)
+                        CHeck = READ(xpathClick, xpathSave, puthToServer)
                     if CHeck.split(',')[0] != pubkeyFromFile:
                         INP_Fkeys = CHeck.split(',')[0]
         else:
@@ -457,17 +488,17 @@ while q3 == True:
 
             print(str('Sent this text to your friend:'), myEncryptM)
             if driver == True:
-                WRITE(myEncryptM, xpathClick, xpathSave)
+                WRITE(myEncryptM, xpathClick, xpathSave, puthToServer)
             else:
                 INP_Fmessage = input('past here friends encrypted message\n:')
 
         if driver == True:
-            INP_Fmessage = READ(xpathClick, xpathSave)
+            INP_Fmessage = READ(xpathClick, xpathSave, puthToServer)
             while INP_Fmessage == myEncryptM:
                 time.sleep(2)
-                INP_Fmessage = READ(xpathClick, xpathSave)
+                INP_Fmessage = READ(xpathClick, xpathSave, puthToServer)
             else:
-                INP_Fmessage = READ(xpathClick, xpathSave)
+                INP_Fmessage = READ(xpathClick, xpathSave, puthToServer)
         else:
             pass
 
@@ -487,3 +518,5 @@ while q3 == True:
             print(str(F_encrypted_m))
     except OSError as e:
         print("Ошибка: %s : %s" % (e, e.strerror))
+        traceback.print_exception(*exc_info)
+        del exc_info

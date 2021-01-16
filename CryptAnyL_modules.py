@@ -8,7 +8,7 @@ from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from sys import exc_info
-from traceback import extract_tb
+import traceback
 import os
 import shutil
 from textwrap import wrap
@@ -108,7 +108,7 @@ def decryptingSalt(i_password, enc_text):
 def creating_Salt(length):
     a = os.urandom(length)
     #print(a)
-    with open('sl.txt', 'wb') as f:
+    with open(os.getcwd()+"/CryptALL/"+'sl.txt', 'wb') as f:
         f.write(a)
     #encSalt_byPass('sl.txt', pasw)
 
@@ -117,12 +117,12 @@ def creating_Salt2():
     #print(a)
     s, t = encryptingSalt('123', a)
     #print(t)
-    with open('sl.txt', 'wb') as f:
+    with open(os.getcwd()+"/CryptALL/"+'sl.txt', 'wb') as f:
         f.write(t)
 # creating_Salt2()
 
 def reading_Salt():
-    with open('sl.txt', 'rb') as f:
+    with open(os.getcwd()+"/CryptALL/"+'sl.txt', 'rb') as f:
         f = f.read()
     t = decryptingSalt('123', f)
     #print(type(t))
@@ -197,7 +197,7 @@ def decry(em, priv):
 #print(res)
 # print(pub())
 
-def en(m, Your_pub_or_friends_key):
+def en(m, pub):
     # Encrypt list of m. This part needs because m can't be more than 40+ symbols.
     m =str(m)
     l = wrap(m, 27)
@@ -299,14 +299,14 @@ def enc_F_save(password, stri, name):
     password = str(password)
     stri = str(stri)
     salt, encryptedtext = encrypting(password, stri)
-    with open(str(os.getcwd()+'/'+str(name)), 'w') as f:
+    with open(str(os.getcwd()+'/CryptALL/'+str(name)), 'w') as f:
         f.write(str(encryptedtext))
 #enc_F_save('123', privkey)
 
 def dec_F_import(password, file) -> object:
     # Load data from file and decrypts it by password
     password = str(password)
-    with open(str(os.getcwd()+'/'+str(file)), 'r') as ff:
+    with open(str(os.getcwd()+'/CryptALL/'+str(file)), 'r') as ff:
         f = ff.read()
     decryptedtext = decrypting(password, f)
     return decryptedtext
@@ -328,7 +328,7 @@ def createNewkeys(NIK, pasw):
 def enfile(FileForEnc, General_Pasw):
     # ENcrypting file
     try:
-        os.mkdir("For_sent")
+        os.mkdir(os.getcwd()+"/CryptALL/"+"For_sent")
     except FileExistsError:
         pass
     FileForEnc = str(FileForEnc)
@@ -343,7 +343,7 @@ def enfile(FileForEnc, General_Pasw):
     res = fernet.encrypt(ff)
     #print("res: ", res)
     resANDkey = str(str(res.decode('utf8'))+",,,"+str(key_for_file)).encode('utf8')
-    with open(str('For_sent/'+os.path.basename(FileForEnc)+'.prcp'), 'wb') as f:
+    with open(str("CryptALL/"+'For_sent/'+os.path.basename(FileForEnc)+'.prcp'), 'wb') as f:
         f.write(resANDkey)
     #key = base64.urlsafe_b64encode(key).decode('utf8')
     return res
@@ -352,7 +352,7 @@ def enfile(FileForEnc, General_Pasw):
 def defile(FileForDec, General_Pasw):
     # DEcrypting file
     try:
-        os.mkdir("Down_files")
+        os.mkdir(os.getcwd()+"/CryptALL/"+"Down_files")
     except FileExistsError:
         pass
     with open(str(FileForDec), 'rb') as f:
@@ -366,7 +366,7 @@ def defile(FileForDec, General_Pasw):
 
 
     fernet = Fernet(key)
-    name = 'Down_files/' + re.sub(r'.prcp', '', os.path.basename(FileForDec))
+    name = "CryptALL/"+'Down_files/' + re.sub(r'.prcp', '', os.path.basename(FileForDec))
     decrypted_file = fernet.decrypt(encrypted_file)
     with open(name, 'wb') as f:
         f.write(decrypted_file)
@@ -401,10 +401,10 @@ def encF_byPass(path, pasw):
     # text = input('Please, write text: ').encode('utf-8')
     token = f.encrypt(ff)
     try:
-        os.mkdir("colection")
+        os.mkdir(os.getcwd()+"/CryptALL/"+"colection")
     except FileExistsError:
         pass
-    with open(str('colection/'+os.path.basename(path)+'.prcp'), 'wb') as f:
+    with open(str("CryptALL/"+'colection/'+os.path.basename(path)+'.prcp'), 'wb') as f:
         f.write(token)
     #print(f)
 # Tk().withdraw()
@@ -442,10 +442,10 @@ def decF_byPass(path, pasw):
 
     #print(decrypted_fb)
     try:
-        os.mkdir("colection")
+        os.mkdir(os.getcwd()+"/CryptALL/"+"colection")
     except FileExistsError:
         pass
-    with open(str('colection/'+re.sub(r'.prcp', '', os.path.basename(path))), 'wb') as f:
+    with open(str("CryptALL/"+'colection/'+re.sub(r'.prcp', '', os.path.basename(path))), 'wb') as f:
         f.write(decrypted)
 
 # Tk().withdraw()
@@ -472,48 +472,62 @@ def out_forma(str):
 
 
 
-def DRIVE(pathToDriver,link):
-    global dr
-    # Write text in common sheet
-    chrome_opt = webdriver.ChromeOptions()
-    chrome_opt.add_argument('--disable-gpu')
-    PATH = pathToDriver  # PATH TO YOUR CHROME WEB DRIVER
-    dr = webdriver.Chrome(executable_path=PATH, chrome_options=chrome_opt)
-    dr.set_window_size(600, 450)
-    #dr.set_window_position(1300,0)
-    dr.get(link)
-    time.sleep(0)
-def WRITE(text, xpathInput, xpathClickSave):
-    el = dr.find_element_by_xpath(xpathInput)
-    #print(el.get_attribute('outerHTML'))
-    el.click()
-    el.clear()
-    el.send_keys(text)
-    #print(el.text)
-    save_changes = dr.find_element_by_xpath(xpathClickSave)
-    time.sleep(2)
-    save_changes.click()
-    time.sleep(2)
-    #dr.close()
-    return el.text
+def DRIVE(pathToDriver = '', link = '', puthToServer = ''):
+    if puthToServer != '':
+        with open(puthToServer, 'r') as f:
+            server = f.read()
+    else:
+        global dr
+        # Write text in common sheet
+        chrome_opt = webdriver.ChromeOptions()
+        chrome_opt.add_argument('--disable-gpu')
+        PATH = pathToDriver  # PATH TO YOUR CHROME WEB DRIVER
+        dr = webdriver.Chrome(executable_path=PATH, chrome_options=chrome_opt)
+        dr.set_window_size(600, 450)
+        #dr.set_window_position(1300,0)
+        dr.get(link)
+        time.sleep(0)
+def WRITE(text, xpathInput = '', xpathClickSave = '', puthToServer = ''):
+    if puthToServer != '':
+        with open(puthToServer, 'w') as f:
+            server = f.write(text)
+        return server
+    else:
+        el = dr.find_element_by_xpath(xpathInput)
+        #print(el.get_attribute('outerHTML'))
+        el.click()
+        el.clear()
+        el.send_keys(text)
+        #print(el.text)
+        save_changes = dr.find_element_by_xpath(xpathClickSave)
+        time.sleep(2)
+        save_changes.click()
+        time.sleep(2)
+        #dr.close()
+        return el.text
 #w = WRITE('pup', "https://docs.google.com/spreadsheets/d/1GpqknTV11PGo3x3PXdS49UtLCET0dj6AgpB1pwPUIVQ/edit?usp=sharing", '//*[@id="t-formula-bar-input"]/div', '//*[@id="docs-file-menu"]')
 #print(w)
 
-def READ(xpathInput, xpathClickSave):
-    # Read text from common sheet
-    el = dr.find_element_by_xpath(xpathInput)
-    #print(el.get_attribute('outerHTML'))
-    el.click()
-    #el.clear()
-    #el.send_keys(text)
-    readed_text = el.text
-    #print(el.text)
-    save_changes = dr.find_element_by_xpath(xpathClickSave)
-    time.sleep(2)
-    save_changes.click()
-    time.sleep(0)
-    #dr.close()
-    return readed_text
+def READ(xpathInput = '', xpathClickSave = '', puthToServer = ''):
+    if puthToServer != '':
+        with open(puthToServer, 'r') as f:
+            server = f.read()
+            return server
+    else:
+        # Read text from common sheet
+        el = dr.find_element_by_xpath(xpathInput)
+        #print(el.get_attribute('outerHTML'))
+        el.click()
+        #el.clear()
+        #el.send_keys(text)
+        readed_text = el.text
+        #print(el.text)
+        save_changes = dr.find_element_by_xpath(xpathClickSave)
+        time.sleep(2)
+        save_changes.click()
+        time.sleep(0)
+        #dr.close()
+        return readed_text
 #t = READ("https://docs.google.com/spreadsheets/d/1GpqknTV11PGo3x3PXdS49UtLCET0dj6AgpB1pwPUIVQ/edit?usp=sharing", '//*[@id="t-formula-bar-input"]/div', '//*[@id="docs-file-menu"]')
 #print(t)
 
