@@ -197,7 +197,7 @@ def decry(em, priv):
 #print(res)
 # print(pub())
 
-def en(m, pub):
+def en(m, Your_pub_or_friends_key):
     # Encrypt list of m. This part needs because m can't be more than 40+ symbols.
     m =str(m)
     l = wrap(m, 27)
@@ -303,7 +303,7 @@ def enc_F_save(password, stri, name):
         f.write(str(encryptedtext))
 #enc_F_save('123', privkey)
 
-def dec_F_import(password, file):
+def dec_F_import(password, file) -> object:
     # Load data from file and decrypts it by password
     password = str(password)
     with open(str(os.getcwd()+'/'+str(file)), 'r') as ff:
@@ -325,7 +325,7 @@ def createNewkeys(NIK, pasw):
     #print('Your public key:', pubkeyFromFile, '\nsent it to your friend')
 
 
-def enfile(FileForEnc):
+def enfile(FileForEnc, General_Pasw):
     # ENcrypting file
     try:
         os.mkdir("For_sent")
@@ -333,32 +333,44 @@ def enfile(FileForEnc):
         pass
     FileForEnc = str(FileForEnc)
     key = Fernet.generate_key()
+    keyf = base64.urlsafe_b64encode(key).decode('utf8')
+    INP_Fkeys = dec_F_import(General_Pasw, 'friendsresAA.txt')
+    INP_Fkeys = b64out(INP_Fkeys)
+    key_for_file = en(keyf, INP_Fkeys)
     fernet = Fernet(key)
     with open(FileForEnc, 'rb') as f:
         ff = f.read()
     res = fernet.encrypt(ff)
+    #print("res: ", res)
+    resANDkey = str(str(res.decode('utf8'))+",,,"+str(key_for_file)).encode('utf8')
     with open(str('For_sent/'+os.path.basename(FileForEnc)+'.prcp'), 'wb') as f:
-        f.write(res)
-    key = base64.urlsafe_b64encode(key).decode('utf8')
-    return key
+        f.write(resANDkey)
+    #key = base64.urlsafe_b64encode(key).decode('utf8')
+    return res
 #print(enfile('aa.png'))
 
-def defile(FileForDec, key):
+def defile(FileForDec, General_Pasw):
     # DEcrypting file
     try:
         os.mkdir("Down_files")
     except FileExistsError:
         pass
-    FileForDec = str(FileForDec)
-    key = key.encode('utf8')
+    with open(str(FileForDec), 'rb') as f:
+        f = f.read()
+    f = f.decode('utf8').split(',,,')
+    encrypted_file = f[0].encode('utf-8')
+    key = f[1]
+    privatkey = dec_F_import(General_Pasw, 'personalresAA.txt')
+    key = de(key, privatkey)
     key = base64.urlsafe_b64decode(key)
+
+
     fernet = Fernet(key)
-    with open(FileForDec, 'rb') as new:
-        nnew = new.read()
     name = 'Down_files/' + re.sub(r'.prcp', '', os.path.basename(FileForDec))
-    newfile = fernet.decrypt(nnew)
+    decrypted_file = fernet.decrypt(encrypted_file)
     with open(name, 'wb') as f:
-        f.write(newfile)
+        f.write(decrypted_file)
+    return decrypted_file
 #defile('aa.png.prcp', input('past key of file:'))
 
 def encF_byPass(path, pasw):
