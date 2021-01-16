@@ -505,7 +505,7 @@ def WRITE(text, xpathInput = '', xpathClickSave = '', puthToServer = ''):
         time.sleep(2)
         #dr.close()
         return el.text
-#w = WRITE('pup', "https://docs.google.com/spreadsheets/d/1GpqknTV11PGo3x3PXdS49UtLCET0dj6AgpB1pwPUIVQ/edit?usp=sharing", '//*[@id="t-formula-bar-input"]/div', '//*[@id="docs-file-menu"]')
+#w
 #print(w)
 
 def READ(xpathInput = '', xpathClickSave = '', puthToServer = ''):
@@ -528,6 +528,6 @@ def READ(xpathInput = '', xpathClickSave = '', puthToServer = ''):
         time.sleep(0)
         #dr.close()
         return readed_text
-#t = READ("https://docs.google.com/spreadsheets/d/1GpqknTV11PGo3x3PXdS49UtLCET0dj6AgpB1pwPUIVQ/edit?usp=sharing", '//*[@id="t-formula-bar-input"]/div', '//*[@id="docs-file-menu"]')
+#t
 #print(t)
 
