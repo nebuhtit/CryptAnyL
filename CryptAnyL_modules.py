@@ -401,10 +401,10 @@ def encF_byPass(path, pasw):
     # text = input('Please, write text: ').encode('utf-8')
     token = f.encrypt(ff)
     try:
-        os.mkdir(os.getcwd()+"/CryptALL/"+"colection")
+        os.mkdir(os.getcwd()+"/CryptALL/"+"Collection")
     except FileExistsError:
         pass
-    with open(str("CryptALL/"+'colection/'+os.path.basename(path)+'.prcp'), 'wb') as f:
+    with open(str("CryptALL/"+'Collection/'+os.path.basename(path)+'.prcp'), 'wb') as f:
         f.write(token)
     #print(f)
 # Tk().withdraw()
@@ -442,10 +442,10 @@ def decF_byPass(path, pasw):
 
     #print(decrypted_fb)
     try:
-        os.mkdir(os.getcwd()+"/CryptALL/"+"colection")
+        os.mkdir(os.getcwd()+"/CryptALL/"+"Collection")
     except FileExistsError:
         pass
-    with open(str("CryptALL/"+'colection/'+re.sub(r'.prcp', '', os.path.basename(path))), 'wb') as f:
+    with open(str("CryptALL/"+'Collection/'+re.sub(r'.prcp', '', os.path.basename(path))), 'wb') as f:
         f.write(decrypted)
 
 # Tk().withdraw()

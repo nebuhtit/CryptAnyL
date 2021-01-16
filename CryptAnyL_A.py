@@ -250,7 +250,7 @@ The author urges to use the program only with good intentions.;
             print("%s : %s" % ('For_sent', e.strerror))
             pass
         try:
-            shutil.rmtree(str(os.getcwd() + '/' + 'colection'))
+            shutil.rmtree(str(os.getcwd() + '/' + 'Collection'))
         except OSError as e:
             pass
         what_to_do = 'continue'
@@ -275,7 +275,7 @@ The author urges to use the program only with good intentions.;
         except OSError as e:
             pass
         try:
-            shutil.rmtree(str(os.getcwd() + '/' + 'colection'))
+            shutil.rmtree(str(os.getcwd() + '/' + 'Collection'))
         except OSError as e:
             pass
         what_to_do = 'continue'
